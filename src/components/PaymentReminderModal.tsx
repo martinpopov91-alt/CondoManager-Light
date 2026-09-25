@@ -88,13 +88,26 @@ export function PaymentReminderModal({
       const owner = apt?.owner ? ` (${apt.owner})` : '';
       const months = a.monthsInDebt || 1;
       const monthsLabel = isBg ? `мес. в просрочие` : `months overdue`;
-      text += `• ${name}${owner} – ${months} ${monthsLabel} | ${a.grandTotal.toFixed(2)} EUR\n`;
+      let line = `• ${name}${owner} – ${months} ${monthsLabel} | €${a.grandTotal.toFixed(2)} EUR`;
+      if ((a.oldDebt || 0) > 0) {
+        line += isBg 
+          ? ` (вкл. стари такси: €${a.oldDebt.toFixed(2)})`
+          : ` (incl. old dues: €${a.oldDebt.toFixed(2)})`;
+      }
+      text += `${line}\n`;
     });
 
     text += `\n----------------------------------------\n`;
     text += isBg
-      ? `Общо просрочени задължения: ${totalOverdueAmount.toFixed(2)} EUR\n`
-      : `Total Overdue Balances: ${totalOverdueAmount.toFixed(2)} EUR\n`;
+      ? `Общо просрочени задължения: €${totalOverdueAmount.toFixed(2)} EUR\n`
+      : `Total Overdue Balances: €${totalOverdueAmount.toFixed(2)} EUR\n`;
+    const totalOld = displayedApartments.reduce((sum, a) => sum + (a.oldDebt || 0), 0);
+    const totalCurrent = displayedApartments.reduce((sum, a) => sum + (a.currentBill || 0), 0);
+    if (totalOld > 0) {
+      text += isBg
+        ? `(от тях текущи такси: €${totalCurrent.toFixed(2)} | стари неплатени: €${totalOld.toFixed(2)})\n`
+        : `(current dues: €${totalCurrent.toFixed(2)} | old unpaid taxes: €${totalOld.toFixed(2)})\n`;
+    }
     text += `----------------------------------------\n\n`;
 
     text += isBg

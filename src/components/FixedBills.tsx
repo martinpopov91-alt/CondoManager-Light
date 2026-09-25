@@ -33,6 +33,7 @@ interface FixedBillsProps {
     totalMonthlyDues?: number;
   };
   onRecalculate?: () => void;
+  onOpenExpensesReport?: () => void;
 }
 
 const billNamesDict: Record<'en' | 'bg', Record<string, string>> = {
@@ -70,7 +71,7 @@ const billNamesDict: Record<'en' | 'bg', Record<string, string>> = {
   }
 };
 
-export function FixedBills({ bills, onChange, rates, onRecalculate }: FixedBillsProps) {
+export function FixedBills({ bills, onChange, rates, onRecalculate, onOpenExpensesReport }: FixedBillsProps) {
   const { t, language } = useTranslation();
   const isBg = language === 'bg';
   const [isCalculating, setIsCalculating] = useState(false);
@@ -180,6 +181,18 @@ export function FixedBills({ bills, onChange, rates, onRecalculate }: FixedBills
               )}
             </span>
           </div>
+
+          {onOpenExpensesReport && (
+            <button
+              type="button"
+              onClick={onOpenExpensesReport}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-300 shadow-2xs transition-all cursor-pointer"
+              title={isBg ? "Преглед на подробния отчет за разходите и сравнение с предходни месеци" : "View multi-month expenses report"}
+            >
+              <Receipt className="w-3.5 h-3.5 text-indigo-600" />
+              <span>{t('reports.openExpensesReport') || (isBg ? 'Отчет за разходите' : 'Expenses Report')}</span>
+            </button>
+          )}
 
           <button
             type="button"

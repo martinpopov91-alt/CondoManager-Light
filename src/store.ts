@@ -1,12 +1,176 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Apartment, MonthData, CalculatedApartmentState, Fund, GitHubCreds } from './types';
 import { DEFAULT_APARTMENTS, DEFAULT_FIXED_BILLS, DEFAULT_FUNDS } from './data';
+import { useAutoSaveMonthData, usePeriodicSaveMonthData } from './hooks/useAutoSaveMonthData';
 
-const CONFIG_KEY = 'Condo_Config_V1';
-const GH_KEY = 'Condo_GH_Creds';
+export { useAutoSaveMonthData, usePeriodicSaveMonthData };
 
-function getMonthKey(year: number, month: number) {
+export const CONFIG_KEY = 'Condo_Config_V1';
+export const GH_KEY = 'Condo_GH_Creds';
+
+export function getMonthKey(year: number, month: number) {
   return `condo_${year}-${month.toString().padStart(2, '0')}`;
+}
+
+export function getAllSavedMonths(currentYear: number, currentMonth: number): MonthData[] {
+  const months: MonthData[] = [];
+  const handledKeys = new Set<string>();
+
+  // 1. Direct sequential scan backward for previous 24 months
+  let curY = currentYear;
+  let curM = currentMonth;
+  for (let i = 0; i < 24; i++) {
+    curM -= 1;
+    if (curM < 1) {
+      curM = 12;
+      curY -= 1;
+    }
+    const key = getMonthKey(curY, curM);
+    handledKeys.add(key);
+    const item = localStorage.getItem(key);
+    if (item) {
+      try {
+        const parsed = JSON.parse(item);
+        if (parsed && typeof parsed.year === 'number' && typeof parsed.month === 'number') {
+          months.push(parsed);
+        }
+      } catch (e) {
+        // ignore parse error
+      }
+    }
+  }
+
+  // 2. Scan all localStorage keys for any other condo_YYYY-MM
+  try {
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith('condo_') && !key.startsWith('condo_autosave_') && !handledKeys.has(key)) {
+        const match = key.match(/^condo_(\d{4})-(\d{2})$/);
+        if (match) {
+          const y = parseInt(match[1], 10);
+          const m = parseInt(match[2], 10);
+          if (y === currentYear && m === currentMonth) continue;
+          const item = localStorage.getItem(key);
+          if (item) {
+            try {
+              const parsed = JSON.parse(item);
+              if (parsed && typeof parsed.year === 'number' && typeof parsed.month === 'number') {
+                months.push(parsed);
+              }
+            } catch (e) {}
+          }
+        }
+      }
+    }
+  } catch (e) {}
+
+  // Sort descending by date (most recent first)
+  months.sort((a, b) => {
+    if (a.year !== b.year) return b.year - a.year;
+    return b.month - a.month;
+  });
+
+  return months;
+}
+
+export function seedSamplePreviousMonths(currentYear: number, currentMonth: number, config: Apartment[]): void {
+  let y1 = currentYear;
+  let m1 = currentMonth - 1;
+  if (m1 < 1) { m1 = 12; y1--; }
+
+  let y2 = y1;
+  let m2 = m1 - 1;
+  if (m2 < 1) { m2 = 12; y2--; }
+
+  const month1Data: MonthData = {
+    year: y1,
+    month: m1,
+    fixedBills: DEFAULT_FIXED_BILLS.map(b => {
+      let amount = 0;
+      if (b.id === 'el-ent') amount = 34.20;
+      else if (b.id === 'el-elev') amount = 28.50;
+      else if (b.id === 'el-sub') amount = 12.00;
+      else if (b.id === 'elev-fee') amount = 45.00;
+      else if (b.id === 'ent-clean') amount = 60.00;
+      else if (b.id === 'gar-el') amount = 15.30;
+      else if (b.id === 'gar-clean') amount = 25.00;
+      else if (b.id === 'maint-mow') amount = 50.00;
+      else if (b.id === 'maint-septic') amount = 80.00;
+      else if (b.id === 'maint-complex') amount = 30.00;
+      else if (b.id === 'repair-fee') amount = 15.00;
+      else if (b.id === 'repair-fund') amount = 100.00;
+      return { ...b, amount, isPaid: true };
+    }),
+    dynamicExpenses: [
+      { id: 'sample-d1', title: 'Смяна на предпазител и LED крушки на стълбище', cost: 24.50, category: 'Repair' },
+      { id: 'sample-d2', title: 'Допълнително косене и почистване на алеите', cost: 35.00, category: 'Mowing' }
+    ],
+    funds: DEFAULT_FUNDS.map(f => ({ ...f, startBalance: 150 })),
+    apartmentsState: config.map(a => ({
+      id: a.id,
+      oldDebt: 0,
+      status: 'Paid',
+      paidAmount: 45,
+      paymentMethod: 'cash',
+      comment: '',
+      selected: false
+    })),
+    revolutCash: 240,
+    inHandCash: 180,
+    notes: 'Sample month archive for testing reports'
+  };
+
+  const month2Data: MonthData = {
+    year: y2,
+    month: m2,
+    fixedBills: DEFAULT_FIXED_BILLS.map(b => {
+      let amount = 0;
+      if (b.id === 'el-ent') amount = 29.80;
+      else if (b.id === 'el-elev') amount = 26.10;
+      else if (b.id === 'el-sub') amount = 11.50;
+      else if (b.id === 'elev-fee') amount = 45.00;
+      else if (b.id === 'ent-clean') amount = 60.00;
+      else if (b.id === 'gar-el') amount = 14.20;
+      else if (b.id === 'gar-clean') amount = 25.00;
+      else if (b.id === 'maint-mow') amount = 50.00;
+      else if (b.id === 'maint-septic') amount = 0.00;
+      else if (b.id === 'maint-complex') amount = 30.00;
+      else if (b.id === 'repair-fund') amount = 100.00;
+      return { ...b, amount, isPaid: true };
+    }),
+    dynamicExpenses: [
+      { id: 'sample-d3', title: 'Монтаж на нов хидравличен автомат за входна врата', cost: 65.00, category: 'Repair' }
+    ],
+    funds: DEFAULT_FUNDS.map(f => ({ ...f, startBalance: 100 })),
+    apartmentsState: config.map(a => ({
+      id: a.id,
+      oldDebt: 0,
+      status: 'Paid',
+      paidAmount: 45,
+      paymentMethod: 'cash',
+      comment: '',
+      selected: false
+    })),
+    revolutCash: 200,
+    inHandCash: 150,
+    notes: 'Sample month archive for testing reports'
+  };
+
+  localStorage.setItem(getMonthKey(y1, m1), JSON.stringify(month1Data));
+  localStorage.setItem(getMonthKey(y2, m2), JSON.stringify(month2Data));
+}
+
+export function clearSamplePreviousMonths(currentYear: number, currentMonth: number): void {
+  let y1 = currentYear;
+  let m1 = currentMonth - 1;
+  if (m1 < 1) { m1 = 12; y1--; }
+
+  let y2 = y1;
+  let m2 = m1 - 1;
+  if (m2 < 1) { m2 = 12; y2--; }
+
+  localStorage.removeItem(getMonthKey(y1, m1));
+  localStorage.removeItem(getMonthKey(y2, m2));
 }
 
 export function getCarriedOverFundBalances(year: number, month: number, config: Apartment[]): Record<string, number> {
@@ -156,7 +320,22 @@ export function useCondoState() {
   useEffect(() => {
     if (config.length === 0) return;
     const key = getMonthKey(currentDate.year, currentDate.month);
-    const savedMonth = localStorage.getItem(key);
+    let savedMonth = localStorage.getItem(key);
+    // If regular entry is missing, check for accidental refresh backup snapshot
+    if (!savedMonth) {
+      const backupKey = `condo_autosave_${currentDate.year}-${currentDate.month.toString().padStart(2, '0')}`;
+      const backupStr = localStorage.getItem(backupKey);
+      if (backupStr) {
+        try {
+          const parsedBackup = JSON.parse(backupStr);
+          if (parsedBackup && parsedBackup.data) {
+            savedMonth = JSON.stringify(parsedBackup.data);
+          }
+        } catch {
+          // ignore parsing error
+        }
+      }
+    }
     const carriedBalances = getCarriedOverFundBalances(currentDate.year, currentDate.month, config);
     
     if (savedMonth) {
@@ -251,13 +430,25 @@ export function useCondoState() {
     }
   }, [currentDate.year, currentDate.month, config]);
 
-  // Save month data on change
+  // Periodically save current monthData state to localStorage to prevent data loss on accidental browser refreshes
+  const autoSave = useAutoSaveMonthData(monthData, {
+    intervalMs: 3000,
+    saveOnUnload: true
+  });
+
+  const [pastMonthsData, setPastMonthsData] = useState<MonthData[]>([]);
+
+  const reloadPastMonths = () => {
+    if (monthData) {
+      setPastMonthsData(getAllSavedMonths(monthData.year, monthData.month));
+    }
+  };
+
   useEffect(() => {
     if (monthData) {
-      const key = getMonthKey(monthData.year, monthData.month);
-      localStorage.setItem(key, JSON.stringify(monthData));
+      setPastMonthsData(getAllSavedMonths(monthData.year, monthData.month));
     }
-  }, [monthData]);
+  }, [monthData?.year, monthData?.month]);
 
   // Save config on change
   const updateConfig = (newConfig: Apartment[]) => {
@@ -527,6 +718,17 @@ export function useCondoState() {
     monthData,
     updateMonthData,
     calculatedData,
-    rollOverMonth
+    rollOverMonth,
+    autoSave,
+    pastMonthsData,
+    reloadPastMonths,
+    seedSampleMonths: () => {
+      seedSamplePreviousMonths(currentDate.year, currentDate.month, config);
+      reloadPastMonths();
+    },
+    clearSampleMonths: () => {
+      clearSamplePreviousMonths(currentDate.year, currentDate.month);
+      reloadPastMonths();
+    }
   };
 }

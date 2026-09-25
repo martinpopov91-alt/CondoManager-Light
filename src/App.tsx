@@ -16,22 +16,41 @@ import { ReportsModal } from './components/ReportsModal';
 import { SettingsModal } from './components/SettingsModal';
 import { PaymentReminderModal } from './components/PaymentReminderModal';
 import { generateFullReport, generateViberGeneral, exportToCSV } from './utils/reports';
-import { CloudUpload, CloudDownload, RefreshCw, X, Printer } from 'lucide-react';
+import { CloudUpload, CloudDownload, RefreshCw, X, Printer, Check } from 'lucide-react';
 import { useTranslation } from './i18n/useTranslation';
 import { EditableCurrencyInput } from './components/EditableCurrencyInput';
 
 export default function App() {
   const { t, language } = useTranslation();
   const isBg = language === 'bg';
-  const { config, updateConfig, currentDate, setCurrentDate, monthData, updateMonthData, calculatedData, rollOverMonth } = useCondoState();
+  const {
+    config,
+    updateConfig,
+    currentDate,
+    setCurrentDate,
+    monthData,
+    updateMonthData,
+    calculatedData,
+    rollOverMonth,
+    autoSave,
+    pastMonthsData,
+    seedSampleMonths,
+    clearSampleMonths
+  } = useCondoState();
 
   const [activeTab, setActiveTab] = useState<'dashboard' | 'instructions'>('dashboard');
   const [showSettings, setShowSettings] = useState(false);
   const [showReports, setShowReports] = useState(false);
+  const [reportsInitialTab, setReportsInitialTab] = useState<'expenses' | 'full' | 'viberGeneral'>('expenses');
   const [showSync, setShowSync] = useState(false);
   const [showReminders, setShowReminders] = useState(false);
   const [selectedReminderId, setSelectedReminderId] = useState<string | undefined>(undefined);
   const [syncStatus, setSyncStatus] = useState<string | null>(null);
+
+  const handleOpenReports = (tab: 'expenses' | 'full' | 'viberGeneral' = 'expenses') => {
+    setReportsInitialTab(tab);
+    setShowReports(true);
+  };
 
   if (!monthData || !calculatedData) {
     return <div className="flex items-center justify-center min-h-screen text-slate-500">{isBg ? 'Зареждане...' : 'Loading...'}</div>;
@@ -229,7 +248,7 @@ export default function App() {
       onPrevMonth={handlePrevMonth}
       onNextMonth={handleNextMonth}
       onOpenSettings={() => setShowSettings(true)}
-      onReports={() => setShowReports(true)}
+      onReports={() => handleOpenReports('expenses')}
       onExport={() => exportToCSV(monthData, calculatedData.apartments, config)}
       onSync={() => { setShowSync(true); setSyncStatus(null); }}
     >
@@ -238,7 +257,42 @@ export default function App() {
       ) : (
         <div className="max-w-[1800px] w-full mx-auto space-y-6">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-            <h2 className="text-2xl font-bold text-slate-800 print:hidden">{t('app.financialDashboard')}</h2>
+            <div className="flex items-center gap-3">
+              <h2 className="text-2xl font-bold text-slate-800 print:hidden">{t('app.financialDashboard')}</h2>
+              {/* Auto-save status indicator */}
+              <div className="print:hidden">
+                {autoSave.isSaving ? (
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-700 border border-amber-200">
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
+                    {t('app.autoSaving')}
+                  </span>
+                ) : autoSave.saveStatus === 'error' ? (
+                  <button
+                    onClick={autoSave.forceSave}
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-100 cursor-pointer"
+                  >
+                    <span>{isBg ? 'Грешка при запис (Опитай пак)' : 'Save Error (Click to retry)'}</span>
+                  </button>
+                ) : autoSave.hasUnsavedChanges ? (
+                  <button
+                    onClick={autoSave.forceSave}
+                    title={isBg ? "Кликнете за незабавно запазване" : "Click to save immediately"}
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100 cursor-pointer transition-colors"
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                    {t('app.unsavedChanges')}
+                  </button>
+                ) : (
+                  <span
+                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200"
+                    title={autoSave.lastSaved ? (isBg ? `Последно автоматично запазване в ${autoSave.lastSaved.toLocaleTimeString()}` : `Last auto-saved at ${autoSave.lastSaved.toLocaleTimeString()}`) : undefined}
+                  >
+                    <Check className="w-3.5 h-3.5 text-emerald-600" />
+                    <span>{t('app.autoSaved')}</span>
+                  </span>
+                )}
+              </div>
+            </div>
           
           <div className="flex items-center gap-4 bg-slate-900 text-white rounded-lg px-4 py-2 shadow-sm print:bg-white print:text-slate-800 print:border print:border-slate-300 print:shadow-none">
             <div className="flex flex-col">
@@ -321,6 +375,7 @@ export default function App() {
           onRecalculate={() => {
             updateMonthData(prev => ({ ...prev }));
           }}
+          onOpenExpensesReport={() => handleOpenReports('expenses')}
         />
         
         <MainTable 
@@ -350,6 +405,7 @@ export default function App() {
               expenses={monthData.dynamicExpenses} 
               onAdd={handleAddDynamicExpense} 
               onRemove={handleRemoveDynamicExpense} 
+              onOpenExpensesReport={() => handleOpenReports('expenses')}
             />
           </div>
 
@@ -387,8 +443,14 @@ export default function App() {
       {showReports && (
         <ReportsModal 
           onClose={() => setShowReports(false)}
-          fullReport={generateFullReport(monthData, calculatedData.apartments, config, calculatedData.funds, isBg ? 'bg' : 'en')}
-          viberGeneral={generateViberGeneral(calculatedData.apartments, config, isBg ? 'bg' : 'en')}
+          monthData={monthData}
+          apartments={calculatedData.apartments}
+          config={config}
+          funds={calculatedData.funds}
+          pastMonthsData={pastMonthsData}
+          initialTab={reportsInitialTab}
+          onSeedSampleMonths={seedSampleMonths}
+          onClearSampleMonths={clearSampleMonths}
         />
       )}
 

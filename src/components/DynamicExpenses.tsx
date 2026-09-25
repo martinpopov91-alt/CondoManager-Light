@@ -1,5 +1,5 @@
 import { DynamicExpense } from '../types';
-import { Trash2, PlusCircle } from 'lucide-react';
+import { Trash2, PlusCircle, Receipt } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from '../i18n/useTranslation';
 
@@ -7,6 +7,7 @@ interface DynamicExpensesProps {
   expenses: DynamicExpense[];
   onAdd: (expense: Omit<DynamicExpense, 'id'>) => void;
   onRemove: (id: string) => void;
+  onOpenExpensesReport?: () => void;
 }
 
 const categories = ['Repair', 'Mowing', 'Septic', 'Complex', 'Other'] as const;
@@ -28,7 +29,7 @@ const categoryLabels: Record<'en' | 'bg', Record<string, string>> = {
   }
 };
 
-export function DynamicExpenses({ expenses, onAdd, onRemove }: DynamicExpensesProps) {
+export function DynamicExpenses({ expenses, onAdd, onRemove, onOpenExpensesReport }: DynamicExpensesProps) {
   const { t, language } = useTranslation();
   const [title, setTitle] = useState('');
   const [cost, setCost] = useState('');
@@ -50,9 +51,22 @@ export function DynamicExpenses({ expenses, onAdd, onRemove }: DynamicExpensesPr
   return (
     <div className="bg-slate-800 text-white rounded border border-slate-900 shadow-sm p-3.5 mb-4 flex flex-col">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
-          {t('dynamic.title') || 'One-off & Extra Expenses'}
-        </h3>
+        <div className="flex items-center gap-2">
+          <h3 className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+            {t('dynamic.title') || 'One-off & Extra Expenses'}
+          </h3>
+          {onOpenExpensesReport && (
+            <button
+              type="button"
+              onClick={onOpenExpensesReport}
+              className="text-[9px] font-bold text-indigo-300 hover:text-white flex items-center gap-1 bg-slate-700/90 hover:bg-slate-700 px-2 py-0.5 rounded cursor-pointer transition-colors border border-slate-600/50"
+              title={isBg ? "Отвори пълен отчет за разходите за текущия и предходните месеци" : "View multi-month expenses report"}
+            >
+              <Receipt className="w-3 h-3 text-indigo-400" />
+              <span>{t('reports.openExpensesReport') || (isBg ? 'Отчет за разходите' : 'Expenses Report')}</span>
+            </button>
+          )}
+        </div>
         {expenses.length > 0 && (
           <span className="text-[10px] font-bold text-rose-400">
             -€{expenses.reduce((s, e) => s + e.cost, 0).toFixed(2)}
