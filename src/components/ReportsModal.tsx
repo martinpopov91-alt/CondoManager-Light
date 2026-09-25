@@ -63,6 +63,7 @@ export function ReportsModal({
   const [timeframe, setTimeframe] = useState<number | 'all'>(6);
   const [viewMode, setViewMode] = useState<'visual' | 'text'>('visual');
   const [viberShowOldDebt, setViberShowOldDebt] = useState(true);
+  const [viberIncludePaid, setViberIncludePaid] = useState(true);
   const [copied, setCopied] = useState(false);
   const [expandedMonths, setExpandedMonths] = useState<Record<string, boolean>>({
     [`${monthData.year}-${monthData.month}`]: true
@@ -92,8 +93,13 @@ export function ReportsModal({
   }, [propFullReport, monthData, apartments, config, funds, isBg, filteredPastMonths]);
 
   const viberGeneralText = useMemo(() => {
-    return propViberGeneral || generateViberGeneral(apartments, config, isBg ? 'bg' : 'en', { showOldDebt: viberShowOldDebt });
-  }, [propViberGeneral, apartments, config, isBg, viberShowOldDebt]);
+    return propViberGeneral || generateViberGeneral(apartments, config, isBg ? 'bg' : 'en', {
+      showOldDebt: viberShowOldDebt,
+      includePaid: viberIncludePaid,
+      month: monthData.month,
+      year: monthData.year
+    });
+  }, [propViberGeneral, apartments, config, isBg, viberShowOldDebt, viberIncludePaid, monthData.month, monthData.year]);
 
   const expensesReportText = useMemo(() => {
     return generateExpensesReport(
@@ -719,26 +725,39 @@ export function ReportsModal({
           {/* TAB 3: VIBER / MESSAGING NOTICE */}
           {activeTab === 'viberGeneral' && (
             <div className="relative group space-y-3">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 bg-indigo-50 border border-indigo-200 rounded-xl text-xs text-indigo-900">
+              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 p-3 bg-indigo-50 border border-indigo-200 rounded-xl text-xs text-indigo-900">
                 <div className="flex items-center gap-2">
                   <span>💡</span>
                   <span>
                     {t('reports.viberHelp') || (isBg 
-                      ? 'Текстът обобщава неплатените такси за директно изпращане във Viber групата на входа.' 
-                      : 'This notice summarizes unpaid dues for direct sharing in your condominium Viber group.')}
+                      ? 'Текстът обобщава платените и неплатените такси за директно изпращане във Viber групата на входа.' 
+                      : 'This notice summarizes paid and unpaid dues for direct sharing in your condominium Viber group.')}
                   </span>
                 </div>
-                <label className="flex items-center gap-2 font-bold cursor-pointer select-none bg-white px-2.5 py-1.5 rounded-lg border border-indigo-200 shadow-2xs self-start sm:self-auto hover:bg-indigo-50/50 transition-colors">
-                  <input
-                    type="checkbox"
-                    checked={viberShowOldDebt}
-                    onChange={(e) => setViberShowOldDebt(e.target.checked)}
-                    className="w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer"
-                  />
-                  <span className="text-[11px] text-indigo-950">
-                    {t('reports.viberShowOldDebt') || (isBg ? 'Показвай стари неплатени такси' : 'Show old unpaid taxes')}
-                  </span>
-                </label>
+                <div className="flex flex-wrap items-center gap-2 self-start lg:self-auto">
+                  <label className="flex items-center gap-2 font-bold cursor-pointer select-none bg-white px-2.5 py-1.5 rounded-lg border border-indigo-200 shadow-2xs hover:bg-indigo-50/50 transition-colors">
+                    <input
+                      type="checkbox"
+                      checked={viberIncludePaid}
+                      onChange={(e) => setViberIncludePaid(e.target.checked)}
+                      className="w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer"
+                    />
+                    <span className="text-[11px] text-indigo-950">
+                      {t('reports.viberIncludePaid') || (isBg ? 'Включи платените' : 'Include paid')}
+                    </span>
+                  </label>
+                  <label className="flex items-center gap-2 font-bold cursor-pointer select-none bg-white px-2.5 py-1.5 rounded-lg border border-indigo-200 shadow-2xs hover:bg-indigo-50/50 transition-colors">
+                    <input
+                      type="checkbox"
+                      checked={viberShowOldDebt}
+                      onChange={(e) => setViberShowOldDebt(e.target.checked)}
+                      className="w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer"
+                    />
+                    <span className="text-[11px] text-indigo-950">
+                      {t('reports.viberShowOldDebt') || (isBg ? 'Показвай стари такси' : 'Show old dues')}
+                    </span>
+                  </label>
+                </div>
               </div>
 
               <div className="relative">

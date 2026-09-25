@@ -164,66 +164,142 @@ export function generateViberGeneral(
   apartments: CalculatedApartmentState[], 
   config: Apartment[], 
   lang: 'bg' | 'en' = 'bg',
-  options?: { showOldDebt?: boolean }
+  options?: { 
+    showOldDebt?: boolean;
+    includePaid?: boolean;
+    month?: number;
+    year?: number;
+  }
 ) {
   const isBg = lang === 'bg';
   const showOldDebt = options?.showOldDebt ?? true;
+  const includePaid = options?.includePaid ?? true;
+
+  const bgMonths = [
+    'Януари', 'Февруари', 'Март', 'Април', 'Май', 'Юни',
+    'Юли', 'Август', 'Септември', 'Октомври', 'Ноември', 'Декември'
+  ];
+  const enMonths = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+
+  const now = new Date();
+  const monthNum = options?.month || (now.getMonth() + 1);
+  const yearNum = options?.year || now.getFullYear();
+  const monthName = isBg ? bgMonths[monthNum - 1] : enMonths[monthNum - 1];
+  const monthStr = `${monthNum.toString().padStart(2, '0')}/${yearNum}`;
+
+  let report = isBg 
+    ? `🏢 БЛОК 7Д – МЕСЕЧНО ИЗВЕСТИЕ ЗА ТАКСИ\n📅 Месец: ${monthName} ${yearNum} г. (${monthStr})\n========================================\n\n`
+    : `🏢 BLOCK 7D – MONTHLY DUES NOTICE\n📅 Month: ${monthName} ${yearNum} (${monthStr})\n========================================\n\n`;
+
   const unpaid = apartments.filter(a => a.status === 'Unpaid' && a.grandTotal > 0);
-  if (unpaid.length === 0) {
-    return isBg 
-      ? "🎉 Всички апартаменти са изрядно заплатени за месеца! Няма дължими такси."
-      : "🎉 All apartments have paid their general dues! No outstanding balances.";
+  const paid = apartments.filter(a => a.status === 'Paid' || (a.grandTotal === 0 && a.currentBill === 0));
+
+  let totalCurrentUnpaid = 0;
+  let totalOldUnpaid = 0;
+
+  // 1. UNPAID APARTMENTS SECTION
+  if (unpaid.length > 0) {
+    report += isBg 
+      ? `⏳ НЕПЛАТЕНИ ТАКСИ (${unpaid.length}):\n`
+      : `⏳ UNPAID DUES (${unpaid.length}):\n`;
+
+    unpaid.forEach(a => {
+      const apt = config.find(c => c.id === a.id);
+      if (apt) {
+        const name = apt.name || `Ап. ${apt.id}`;
+        const ownerStr = apt.owner ? ` (${apt.owner})` : '';
+        const current = a.currentBill || 0;
+        const old = a.oldDebt || 0;
+        totalCurrentUnpaid += current;
+        totalOldUnpaid += old;
+
+        let line = `• ${name}${ownerStr}: €${a.grandTotal.toFixed(2)} EUR`;
+
+        if (showOldDebt && old > 0) {
+          if (current > 0) {
+            line += isBg
+              ? ` (текуща: €${current.toFixed(2)} + стари такси: €${old.toFixed(2)})`
+              : ` (current: €${current.toFixed(2)} + old dues: €${old.toFixed(2)})`;
+          } else {
+            line += isBg
+              ? ` (стари такси: €${old.toFixed(2)})`
+              : ` (old dues: €${old.toFixed(2)})`;
+          }
+        }
+
+        report += `${line}\n`;
+      }
+    });
+    report += `\n`;
+  } else {
+    report += isBg 
+      ? `🎉 Всички апартаменти са изрядно заплатени за месеца! Няма дължими такси.\n\n`
+      : `🎉 All apartments have paid their general dues! No outstanding balances.\n\n`;
   }
 
-  let report = isBg ? `🏢 Блок 7Д – Неплатени такси за месеца\n\n` : `🏢 Block 7D - Unpaid Dues\n\n`;
-  
-  let totalCurrent = 0;
-  let totalOld = 0;
+  // 2. PAID APARTMENTS SECTION
+  if (includePaid && paid.length > 0) {
+    report += isBg 
+      ? `✅ ПЛАТЕНИ ТАКСИ (${paid.length}):\n`
+      : `✅ PAID DUES (${paid.length}):\n`;
 
-  unpaid.forEach(a => {
-    const apt = config.find(c => c.id === a.id);
-    if (apt) {
-      const name = apt.name || `Ап. ${apt.id}`;
-      const ownerStr = apt.owner ? ` (${apt.owner})` : '';
-      const current = a.currentBill || 0;
-      const old = a.oldDebt || 0;
-      totalCurrent += current;
-      totalOld += old;
+    paid.forEach(a => {
+      const apt = config.find(c => c.id === a.id);
+      if (apt) {
+        const name = apt.name || `Ап. ${apt.id}`;
+        const ownerStr = apt.owner ? ` (${apt.owner})` : '';
+        const effectivePaid = (a.paidAmount !== undefined && a.paidAmount !== null && a.paidAmount > 0)
+          ? a.paidAmount
+          : a.grandTotal;
 
-      let line = `• ${name}${ownerStr}: €${a.grandTotal.toFixed(2)} EUR`;
+        const methodStr = a.paymentMethod === 'revolut' 
+          ? 'Revolut' 
+          : (isBg ? 'В брой' : 'Cash');
 
-      if (showOldDebt && old > 0) {
-        if (current > 0) {
-          line += isBg
-            ? ` (текуща: €${current.toFixed(2)} + стари такси: €${old.toFixed(2)})`
-            : ` (current: €${current.toFixed(2)} + old dues: €${old.toFixed(2)})`;
+        if (a.grandTotal === 0 && a.currentBill === 0 && a.oldDebt === 0) {
+          report += isBg
+            ? `• ${name}${ownerStr}: €0.00 EUR (Освободен)\n`
+            : `• ${name}${ownerStr}: €0.00 EUR (Exempt)\n`;
         } else {
-          line += isBg
-            ? ` (стари такси: €${old.toFixed(2)})`
-            : ` (old dues: €${old.toFixed(2)})`;
+          report += `• ${name}${ownerStr}: €${effectivePaid.toFixed(2)} EUR (${methodStr})\n`;
         }
       }
+    });
+    report += `\n`;
+  }
 
-      report += `${line}\n`;
-    }
-  });
-
+  // 3. MONTHLY SUMMARY SECTION
   const totalUnpaid = unpaid.reduce((sum, a) => sum + a.grandTotal, 0);
-  
-  report += `\n----------------------------------------\n`;
-  report += isBg 
-    ? `Общо дължима сума: €${totalUnpaid.toFixed(2)} EUR\n`
-    : `Total Outstanding: €${totalUnpaid.toFixed(2)} EUR\n`;
+  const totalPaid = paid.reduce((sum, a) => {
+    const amt = (a.paidAmount !== undefined && a.paidAmount !== null && a.paidAmount > 0)
+      ? a.paidAmount
+      : a.grandTotal;
+    return sum + amt;
+  }, 0);
+  const totalExpected = totalPaid + totalUnpaid;
+  const collectionPct = totalExpected > 0 ? Math.round((totalPaid / totalExpected) * 100) : 100;
 
-  if (showOldDebt && totalOld > 0) {
+  report += `----------------------------------------\n`;
+  report += isBg ? `📊 ОБОБЩЕНИЕ ЗА МЕСЕЦА:\n` : `📊 MONTHLY SUMMARY:\n`;
+  report += isBg
+    ? `• Платени: €${totalPaid.toFixed(2)} EUR (${paid.length} ап. • ${collectionPct}% събираемост)\n`
+    : `• Collected (Paid): €${totalPaid.toFixed(2)} EUR (${paid.length} apts • ${collectionPct}% collected)\n`;
+  report += isBg 
+    ? `• Дължими (неплатени): €${totalUnpaid.toFixed(2)} EUR (${unpaid.length} ап.)\n`
+    : `• Outstanding (Unpaid): €${totalUnpaid.toFixed(2)} EUR (${unpaid.length} apts)\n`;
+
+  if (showOldDebt && totalOldUnpaid > 0) {
     report += isBg
-      ? `(от тях текущи такси: €${totalCurrent.toFixed(2)} | стари неплатени: €${totalOld.toFixed(2)})\n`
-      : `(of which current dues: €${totalCurrent.toFixed(2)} | old unpaid taxes: €${totalOld.toFixed(2)})\n`;
+      ? `  (от тях текущи такси: €${totalCurrentUnpaid.toFixed(2)} | стари неплатени: €${totalOldUnpaid.toFixed(2)})\n`
+      : `  (of which current dues: €${totalCurrentUnpaid.toFixed(2)} | old unpaid taxes: €${totalOldUnpaid.toFixed(2)})\n`;
   }
 
   report += isBg 
-    ? `\nМоля за своевременно заплащане на таксите.`
-    : `\nPlease settle outstanding balances promptly.`;
+    ? `\nМоля за своевременно заплащане на дължимите такси.\nБлагодарим на всички съседи, които вече заплатиха!`
+    : `\nPlease settle outstanding balances promptly.\nThank you to everyone who has already settled their dues!`;
 
   return report;
 }
