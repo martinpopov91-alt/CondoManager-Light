@@ -258,18 +258,18 @@ export default function App() {
         <div className="max-w-[1800px] w-full mx-auto space-y-6">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div className="flex items-center gap-3">
-              <h2 className="text-2xl font-bold text-slate-800 print:hidden">{t('app.financialDashboard')}</h2>
+              <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 print:hidden transition-colors">{t('app.financialDashboard')}</h2>
               {/* Auto-save status indicator */}
               <div className="print:hidden">
                 {autoSave.isSaving ? (
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-700 border border-amber-200">
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800">
                     <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
                     {t('app.autoSaving')}
                   </span>
                 ) : autoSave.saveStatus === 'error' ? (
                   <button
                     onClick={autoSave.forceSave}
-                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-100 cursor-pointer"
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-rose-50 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800 hover:bg-rose-100 dark:hover:bg-rose-900/60 cursor-pointer"
                   >
                     <span>{isBg ? 'Грешка при запис (Опитай пак)' : 'Save Error (Click to retry)'}</span>
                   </button>
@@ -277,24 +277,24 @@ export default function App() {
                   <button
                     onClick={autoSave.forceSave}
                     title={isBg ? "Кликнете за незабавно запазване" : "Click to save immediately"}
-                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100 cursor-pointer transition-colors"
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800 hover:bg-blue-100 dark:hover:bg-blue-900/60 cursor-pointer transition-colors"
                   >
                     <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
                     {t('app.unsavedChanges')}
                   </button>
                 ) : (
                   <span
-                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200"
+                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800"
                     title={autoSave.lastSaved ? (isBg ? `Последно автоматично запазване в ${autoSave.lastSaved.toLocaleTimeString()}` : `Last auto-saved at ${autoSave.lastSaved.toLocaleTimeString()}`) : undefined}
                   >
-                    <Check className="w-3.5 h-3.5 text-emerald-600" />
+                    <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
                     <span>{t('app.autoSaved')}</span>
                   </span>
                 )}
               </div>
             </div>
           
-          <div className="flex items-center gap-4 bg-slate-900 text-white rounded-lg px-4 py-2 shadow-sm print:bg-white print:text-slate-800 print:border print:border-slate-300 print:shadow-none">
+          <div className="flex items-center gap-4 bg-slate-900 text-white rounded-lg px-4 py-2 shadow-sm border border-slate-800 print:bg-white print:text-slate-800 print:border print:border-slate-300 print:shadow-none">
             <div className="flex flex-col">
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{t('app.totalBalance')}</span>
               <div className="flex items-center">
@@ -343,13 +343,13 @@ export default function App() {
           <div className="flex items-center gap-2 print:hidden">
             <button
               onClick={() => window.print()}
-              className="flex items-center gap-2 px-4 py-2 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-md font-medium text-sm transition-colors cursor-pointer"
+              className="flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 rounded-md font-medium text-sm transition-colors cursor-pointer"
             >
               <Printer className="w-4 h-4" /> {t('app.print')}
             </button>
             <button
               onClick={rollOverMonth}
-              className="flex items-center gap-2 px-4 py-2 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-md font-medium text-sm transition-colors cursor-pointer"
+              className="flex items-center gap-2 px-4 py-2 bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-indigo-900/60 border border-indigo-200 dark:border-indigo-800 rounded-md font-medium text-sm transition-colors cursor-pointer"
             >
               <RefreshCw className="w-4 h-4" /> {t('app.nextMonth')}
             </button>
@@ -409,10 +409,10 @@ export default function App() {
             />
           </div>
 
-          <div className="lg:col-span-1 bg-white rounded border border-slate-200 shadow-sm p-4 print:shadow-none print:border-slate-300 print:break-inside-avoid">
-            <h3 className="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-3">{t('app.monthlyNotes')}</h3>
+          <div className="lg:col-span-1 bg-white dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-800 shadow-sm p-4 print:shadow-none print:border-slate-300 print:break-inside-avoid transition-colors">
+            <h3 className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3">{t('app.monthlyNotes')}</h3>
             <textarea
-              className="w-full h-48 p-3 text-sm border border-slate-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-y print:border-none print:p-0 print:resize-none"
+              className="w-full h-48 p-3 text-sm bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-y print:border-none print:p-0 print:resize-none"
               placeholder={t('app.monthlyNotesPlaceholder')}
               value={monthData.notes || ''}
               onChange={(e) => updateMonthData(prev => ({ ...prev, notes: e.target.value }))}
@@ -468,26 +468,26 @@ export default function App() {
       )}
 
       {showSync && (
-        <div className="fixed inset-0 bg-slate-900/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-xl shadow-xl w-full max-w-sm flex flex-col p-6 relative">
-            <button onClick={() => setShowSync(false)} className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 cursor-pointer">
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 transition-colors">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-xl w-full max-w-sm flex flex-col p-6 relative transition-colors">
+            <button onClick={() => setShowSync(false)} className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer">
               <X className="w-5 h-5" />
             </button>
-            <h2 className="text-xl font-bold text-slate-800 mb-4">
+            <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100 mb-4">
               {isBg ? 'GitHub Синхронизация' : 'GitHub Sync'}
             </h2>
             <div className="flex gap-4 mb-4">
-              <button onClick={() => syncToGitHub('push')} className="flex-1 flex flex-col items-center gap-2 p-4 border border-slate-200 rounded-lg hover:border-indigo-600 hover:bg-indigo-50 transition-colors text-slate-700 cursor-pointer">
-                <CloudUpload className="w-6 h-6 text-indigo-600" />
+              <button onClick={() => syncToGitHub('push')} className="flex-1 flex flex-col items-center gap-2 p-4 border border-slate-200 dark:border-slate-700 rounded-lg hover:border-indigo-600 dark:hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 transition-colors text-slate-700 dark:text-slate-200 cursor-pointer">
+                <CloudUpload className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
                 <span className="font-bold text-xs uppercase">{isBg ? 'Качи данни (Push)' : 'Push Data'}</span>
               </button>
-              <button onClick={() => syncToGitHub('pull')} className="flex-1 flex flex-col items-center gap-2 p-4 border border-slate-200 rounded-lg hover:border-emerald-600 hover:bg-emerald-50 transition-colors text-slate-700 cursor-pointer">
-                <CloudDownload className="w-6 h-6 text-emerald-600" />
+              <button onClick={() => syncToGitHub('pull')} className="flex-1 flex flex-col items-center gap-2 p-4 border border-slate-200 dark:border-slate-700 rounded-lg hover:border-emerald-600 dark:hover:border-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 transition-colors text-slate-700 dark:text-slate-200 cursor-pointer">
+                <CloudDownload className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
                 <span className="font-bold text-xs uppercase">{isBg ? 'Свали данни (Pull)' : 'Pull Data'}</span>
               </button>
             </div>
             {syncStatus && (
-              <div className="p-3 bg-slate-100 rounded-md text-xs text-slate-700 font-bold text-center">
+              <div className="p-3 bg-slate-100 dark:bg-slate-800 rounded-md text-xs text-slate-700 dark:text-slate-300 font-bold text-center border border-slate-200 dark:border-slate-700">
                 {syncStatus}
               </div>
             )}

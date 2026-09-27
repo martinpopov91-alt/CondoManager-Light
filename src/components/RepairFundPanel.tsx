@@ -17,16 +17,16 @@ export function RepairFundPanel({ bills, onChange }: RepairFundPanelProps) {
   if (!repairBill) return null;
 
   return (
-    <div className="bg-white rounded border border-indigo-200 shadow-sm overflow-hidden p-4 h-full flex flex-col justify-between">
+    <div className="bg-white dark:bg-slate-900 rounded border border-indigo-200 dark:border-indigo-900/60 shadow-sm overflow-hidden p-4 h-full flex flex-col justify-between transition-colors">
       <div>
         <div className="flex items-center gap-2 mb-2">
-          <Wrench className="w-4 h-4 text-indigo-500" />
-          <h3 className="text-xs font-bold uppercase tracking-wider text-indigo-600">
+          <Wrench className="w-4 h-4 text-indigo-500 dark:text-indigo-400" />
+          <h3 className="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
             {isBg ? 'Месечно събиране за Фонд Ремонт' : 'Monthly Repair Fund Collection'}
           </h3>
         </div>
         
-        <p className="text-xs text-slate-500 mb-4">
+        <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
           {isBg 
             ? 'Посочете общата целева сума за фонд Ремонт за този месец. Разпределя се пропорционално на % Идеални части.'
             : 'Specify the total amount to collect for the repair fund this month. Distributed based on % Ideal Parts.'}
@@ -34,7 +34,7 @@ export function RepairFundPanel({ bills, onChange }: RepairFundPanelProps) {
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 items-end">
           <div className="flex flex-col gap-1">
-            <label className="text-[10px] font-bold text-slate-600 uppercase">
+            <label className="text-[10px] font-bold text-slate-600 dark:text-slate-300 uppercase">
               {isBg ? 'Обща целева сума' : 'Total Amount'}
             </label>
             <div className="flex items-center gap-1.5">
@@ -42,17 +42,17 @@ export function RepairFundPanel({ bills, onChange }: RepairFundPanelProps) {
                 type="number"
                 min="0"
                 step="0.01"
-                className="w-full px-2.5 py-1.5 text-xs border border-indigo-300 rounded focus:outline-none focus:ring-1 focus:ring-indigo-500 bg-white font-medium"
+                className="w-full px-2.5 py-1.5 text-xs border border-indigo-300 dark:border-indigo-800 rounded focus:outline-none focus:ring-1 focus:ring-indigo-500 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 font-medium"
                 value={repairBill.amount || ''}
                 onChange={(e) => onChange(repairBill.id, 'amount', parseFloat(e.target.value) || 0)}
                 placeholder="0.00"
               />
-              <span className="text-xs text-slate-500 font-bold">EUR</span>
+              <span className="text-xs text-slate-500 dark:text-slate-400 font-bold">EUR</span>
             </div>
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-[10px] font-bold text-slate-600 uppercase">
+            <label className="text-[10px] font-bold text-slate-600 dark:text-slate-300 uppercase">
               {isBg ? 'Авто-прехвърляне за следващ месец' : 'Auto-transfer Next Month'}
             </label>
             <button
@@ -63,7 +63,7 @@ export function RepairFundPanel({ bills, onChange }: RepairFundPanelProps) {
                 "w-full px-2 py-1.5 text-[10px] font-extrabold uppercase rounded cursor-pointer transition-all flex items-center justify-center gap-1 border select-none",
                 repairBill.isFixed
                   ? "bg-indigo-600 text-white border-indigo-600 shadow-2xs"
-                  : "bg-slate-100 text-slate-500 border-slate-300 hover:bg-slate-200"
+                  : "bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-300 border-slate-300 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700"
               )}
             >
               <Repeat className="w-3 h-3" />
@@ -72,7 +72,7 @@ export function RepairFundPanel({ bills, onChange }: RepairFundPanelProps) {
           </div>
 
           <div className="flex flex-col gap-1">
-             <label className="text-[10px] font-bold text-slate-600 uppercase">
+             <label className="text-[10px] font-bold text-slate-600 dark:text-slate-300 uppercase">
                {isBg ? 'Статус на фонда' : 'Fund Status'}
              </label>
              <div className="flex items-center gap-2 py-1">
@@ -80,7 +80,7 @@ export function RepairFundPanel({ bills, onChange }: RepairFundPanelProps) {
                  checked={repairBill.isPaid} 
                  onChange={(v) => onChange(repairBill.id, 'isPaid', v)} 
                />
-               <span className="text-[10px] font-bold text-slate-600">
+               <span className="text-[10px] font-bold text-slate-600 dark:text-slate-300">
                  {repairBill.isPaid ? (isBg ? 'Събран' : 'Collected') : (isBg ? 'В очакване' : 'Pending')}
                </span>
              </div>

@@ -52,6 +52,9 @@ export interface CalculatedApartmentState extends ApartmentMonthState {
   grandTotal: number;
   monthsInDebt?: number;
   repairFundShare: number;
+  generalShare?: number;
+  maintShare?: number;
+  garageShare?: number;
   isEmpty?: boolean;
 }
 

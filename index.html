@@ -7,8 +7,20 @@
     <meta name="description" content="A monthly financial management dashboard for apartment building Block 7D." />
     <meta property="og:title" content="CondoManager Light" />
     <meta property="og:description" content="A monthly financial management dashboard for apartment building Block 7D." />
+    <script>
+      (function() {
+        try {
+          var saved = localStorage.getItem('condo_theme');
+          if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+          }
+        } catch (e) {}
+      })();
+    </script>
   </head>
-  <body>
+  <body class="bg-slate-100 dark:bg-slate-950 text-slate-800 dark:text-slate-100 transition-colors">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

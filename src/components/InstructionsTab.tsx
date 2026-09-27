@@ -156,7 +156,7 @@ export function InstructionsTab({ onGoToDashboard }: InstructionsTabProps) {
                 "flex items-center gap-2 px-3.5 py-2 rounded-lg whitespace-nowrap transition-all border cursor-pointer",
                 isActive
                   ? "bg-indigo-600 text-white border-indigo-600 shadow-sm"
-                  : "bg-white text-slate-600 border-slate-200 hover:bg-slate-50 hover:text-slate-900"
+                  : "bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-100"
               )}
             >
               <Icon className="w-3.5 h-3.5" />
@@ -168,16 +168,16 @@ export function InstructionsTab({ onGoToDashboard }: InstructionsTabProps) {
 
       {/* SECTION 1: HOW CALCULATIONS WORK */}
       {(activeSection === 'all' || activeSection === 'calc') && (
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 space-y-6">
-          <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
-            <div className="p-2.5 bg-indigo-50 border border-indigo-100 rounded-lg text-indigo-600">
+        <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm p-6 space-y-6 transition-colors">
+          <div className="flex items-center gap-3 border-b border-slate-100 dark:border-slate-800 pb-4">
+            <div className="p-2.5 bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-100 dark:border-indigo-900/60 rounded-lg text-indigo-600 dark:text-indigo-400">
               <Calculator className="w-6 h-6" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-slate-800">
+              <h2 className="text-lg font-bold text-slate-800 dark:text-slate-100">
                 {isBg ? '1. Как се изчисляват месечните такси на апартаментите' : '1. How Monthly Apartment Dues Are Calculated'}
               </h2>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 {isBg 
                   ? 'Точните математически правила и разпределения, заложени в системата' 
                   : 'The exact mathematical rules and proportions built into the system'}
@@ -187,77 +187,77 @@ export function InstructionsTab({ onGoToDashboard }: InstructionsTabProps) {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {/* Rule 1: General Entrance */}
-            <div className="bg-slate-50 rounded-lg p-4 border border-slate-200 flex flex-col justify-between">
+            <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4 border border-slate-200 dark:border-slate-700/80 flex flex-col justify-between">
               <div>
-                <div className="flex items-center gap-2 text-indigo-600 font-bold text-xs mb-2">
+                <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-bold text-xs mb-2">
                   <Building2 className="w-4 h-4" />
                   <span>{isBg ? 'Общи разходи вход' : 'General Entrance'}</span>
                 </div>
-                <p className="text-xs text-slate-600 mb-3">
+                <p className="text-xs text-slate-600 dark:text-slate-300 mb-3">
                   {isBg 
                     ? 'Ток стълбище, асансьор ток, чистач, домофон, кофи за боклук и др. такси за общите части.'
                     : 'Staircase lighting, elevator electricity, cleaning, intercom, waste fees, and entrance upkeep.'}
                 </p>
               </div>
-              <div className="bg-white p-2.5 rounded border border-slate-200 text-[11px] font-mono text-slate-700">
-                <span className="font-bold text-indigo-700 block mb-0.5">{isBg ? 'Формула:' : 'Formula:'}</span>
+              <div className="bg-white dark:bg-slate-900 p-2.5 rounded border border-slate-200 dark:border-slate-700 text-[11px] font-mono text-slate-700 dark:text-slate-200">
+                <span className="font-bold text-indigo-700 dark:text-indigo-300 block mb-0.5">{isBg ? 'Формула:' : 'Formula:'}</span>
                 Rate = (Σ General - Base) / Total Residents
               </div>
             </div>
 
             {/* Rule 2: Maintenance */}
-            <div className="bg-slate-50 rounded-lg p-4 border border-slate-200 flex flex-col justify-between">
+            <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4 border border-slate-200 dark:border-slate-700/80 flex flex-col justify-between">
               <div>
-                <div className="flex items-center gap-2 text-emerald-600 font-bold text-xs mb-2">
+                <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-bold text-xs mb-2">
                   <Zap className="w-4 h-4" />
                   <span>{isBg ? 'Поддръжка и дворове' : 'Maintenance & Grounds'}</span>
                 </div>
-                <p className="text-xs text-slate-600 mb-3">
+                <p className="text-xs text-slate-600 dark:text-slate-300 mb-3">
                   {isBg 
                     ? 'Септична яма, почистване на комплекс, градинарство и техническа поддръжка.'
                     : 'Septic servicing, complex cleaning, landscaping, and technical maintenance.'}
                 </p>
               </div>
-              <div className="bg-white p-2.5 rounded border border-slate-200 text-[11px] font-mono text-slate-700">
-                <span className="font-bold text-emerald-700 block mb-0.5">{isBg ? 'Формула:' : 'Formula:'}</span>
+              <div className="bg-white dark:bg-slate-900 p-2.5 rounded border border-slate-200 dark:border-slate-700 text-[11px] font-mono text-slate-700 dark:text-slate-200">
+                <span className="font-bold text-emerald-700 dark:text-emerald-300 block mb-0.5">{isBg ? 'Формула:' : 'Formula:'}</span>
                 Rate = Σ Maint / Total Residents
               </div>
             </div>
 
             {/* Rule 3: Garages */}
-            <div className="bg-slate-50 rounded-lg p-4 border border-slate-200 flex flex-col justify-between">
+            <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4 border border-slate-200 dark:border-slate-700/80 flex flex-col justify-between">
               <div>
-                <div className="flex items-center gap-2 text-amber-600 font-bold text-xs mb-2">
+                <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400 font-bold text-xs mb-2">
                   <Car className="w-4 h-4" />
                   <span>{isBg ? 'Гаражи и електроенергия' : 'Garages & Electricity'}</span>
                 </div>
-                <p className="text-xs text-slate-600 mb-3">
+                <p className="text-xs text-slate-600 dark:text-slate-300 mb-3">
                   {isBg 
                     ? 'Ток за гаражи, автоматични гаражни врати и поддръжка на гаражни клетки.'
                     : 'Garage power consumption, automated gate servicing, and garage maintenance.'}
                 </p>
               </div>
-              <div className="bg-white p-2.5 rounded border border-slate-200 text-[11px] font-mono text-slate-700">
-                <span className="font-bold text-amber-700 block mb-0.5">{isBg ? 'Формула:' : 'Formula:'}</span>
+              <div className="bg-white dark:bg-slate-900 p-2.5 rounded border border-slate-200 dark:border-slate-700 text-[11px] font-mono text-slate-700 dark:text-slate-200">
+                <span className="font-bold text-amber-700 dark:text-amber-300 block mb-0.5">{isBg ? 'Формула:' : 'Formula:'}</span>
                 Rate = Σ Garage / Total Garage Units
               </div>
             </div>
 
             {/* Rule 4: Repair Fund */}
-            <div className="bg-slate-50 rounded-lg p-4 border border-slate-200 flex flex-col justify-between">
+            <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4 border border-slate-200 dark:border-slate-700/80 flex flex-col justify-between">
               <div>
-                <div className="flex items-center gap-2 text-sky-600 font-bold text-xs mb-2">
+                <div className="flex items-center gap-2 text-sky-600 dark:text-sky-400 font-bold text-xs mb-2">
                   <Percent className="w-4 h-4" />
                   <span>{isBg ? 'Фонд Ремонт (% Ид. части)' : 'Repair Fund (% Co-ownership)'}</span>
                 </div>
-                <p className="text-xs text-slate-600 mb-3">
+                <p className="text-xs text-slate-600 dark:text-slate-300 mb-3">
                   {isBg 
                     ? 'Разпределя се строго пропорционално според процента идеални части на имота по нотариален акт.'
                     : 'Distributed strictly proportional to the apartment\'s share of common areas (% Ideal Parts).'}
                 </p>
               </div>
-              <div className="bg-white p-2.5 rounded border border-slate-200 text-[11px] font-mono text-slate-700">
-                <span className="font-bold text-sky-700 block mb-0.5">{isBg ? 'Формула:' : 'Formula:'}</span>
+              <div className="bg-white dark:bg-slate-900 p-2.5 rounded border border-slate-200 dark:border-slate-700 text-[11px] font-mono text-slate-700 dark:text-slate-200">
+                <span className="font-bold text-sky-700 dark:text-sky-300 block mb-0.5">{isBg ? 'Формула:' : 'Formula:'}</span>
                 Due = Target × (% Co-ownership Share / 100)
               </div>
             </div>
@@ -279,22 +279,22 @@ export function InstructionsTab({ onGoToDashboard }: InstructionsTabProps) {
           </div>
 
           {/* INTERACTIVE CALCULATION SIMULATOR */}
-          <div className="border border-indigo-100 bg-indigo-50/40 rounded-xl p-5 space-y-4">
+          <div className="border border-indigo-100 dark:border-indigo-900/60 bg-indigo-50/40 dark:bg-indigo-950/30 rounded-xl p-5 space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-indigo-600" />
-                <h3 className="text-sm font-bold text-slate-800">
+                <Sparkles className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                <h3 className="text-sm font-bold text-slate-800 dark:text-slate-100">
                   {isBg ? 'Интерактивен симулатор на изчислението' : 'Interactive Calculation Simulator'}
                 </h3>
               </div>
-              <span className="text-[11px] text-indigo-700 font-medium">
+              <span className="text-[11px] text-indigo-700 dark:text-indigo-300 font-medium">
                 {isBg ? 'Променете стойностите по-долу, за да видите резултата:' : 'Adjust the inputs below to test any scenario:'}
               </span>
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
               <div>
-                <label className="text-[10px] font-bold uppercase text-slate-500 block mb-1">
+                <label className="text-[10px] font-bold uppercase text-slate-500 dark:text-slate-400 block mb-1">
                   {isBg ? 'Живущи (хора)' : 'Residents'}
                 </label>
                 <input
@@ -303,12 +303,12 @@ export function InstructionsTab({ onGoToDashboard }: InstructionsTabProps) {
                   max="10"
                   value={demoResidents}
                   onChange={(e) => setDemoResidents(parseInt(e.target.value) || 0)}
-                  className="w-full px-2.5 py-1.5 text-xs font-bold bg-white border border-slate-300 rounded focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                  className="w-full px-2.5 py-1.5 text-xs font-bold bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 border border-slate-300 dark:border-slate-700 rounded focus:ring-2 focus:ring-indigo-500 focus:outline-none"
                 />
               </div>
 
               <div>
-                <label className="text-[10px] font-bold uppercase text-slate-500 block mb-1">
+                <label className="text-[10px] font-bold uppercase text-slate-500 dark:text-slate-400 block mb-1">
                   {isBg ? 'Гаражи' : 'Garages'}
                 </label>
                 <input
@@ -317,12 +317,12 @@ export function InstructionsTab({ onGoToDashboard }: InstructionsTabProps) {
                   max="5"
                   value={demoGarages}
                   onChange={(e) => setDemoGarages(parseInt(e.target.value) || 0)}
-                  className="w-full px-2.5 py-1.5 text-xs font-bold bg-white border border-slate-300 rounded focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                  className="w-full px-2.5 py-1.5 text-xs font-bold bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 border border-slate-300 dark:border-slate-700 rounded focus:ring-2 focus:ring-indigo-500 focus:outline-none"
                 />
               </div>
 
               <div>
-                <label className="text-[10px] font-bold uppercase text-slate-500 block mb-1">
+                <label className="text-[10px] font-bold uppercase text-slate-500 dark:text-slate-400 block mb-1">
                   {isBg ? '% Ид. части' : '% Ideal Parts'}
                 </label>
                 <input
@@ -331,12 +331,12 @@ export function InstructionsTab({ onGoToDashboard }: InstructionsTabProps) {
                   min="0"
                   value={demoParts}
                   onChange={(e) => setDemoParts(parseFloat(e.target.value) || 0)}
-                  className="w-full px-2.5 py-1.5 text-xs font-bold bg-white border border-slate-300 rounded focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                  className="w-full px-2.5 py-1.5 text-xs font-bold bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 border border-slate-300 dark:border-slate-700 rounded focus:ring-2 focus:ring-indigo-500 focus:outline-none"
                 />
               </div>
 
               <div>
-                <label className="text-[10px] font-bold uppercase text-slate-500 block mb-1">
+                <label className="text-[10px] font-bold uppercase text-slate-500 dark:text-slate-400 block mb-1">
                   {isBg ? 'Такса / човек (€)' : 'Rate / Resident (€)'}
                 </label>
                 <input
@@ -349,12 +349,12 @@ export function InstructionsTab({ onGoToDashboard }: InstructionsTabProps) {
                     setDemoGeneralRate(total * 0.6);
                     setDemoMaintRate(total * 0.4);
                   }}
-                  className="w-full px-2.5 py-1.5 text-xs font-bold bg-white border border-slate-300 rounded focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                  className="w-full px-2.5 py-1.5 text-xs font-bold bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 border border-slate-300 dark:border-slate-700 rounded focus:ring-2 focus:ring-indigo-500 focus:outline-none"
                 />
               </div>
 
               <div>
-                <label className="text-[10px] font-bold uppercase text-slate-500 block mb-1">
+                <label className="text-[10px] font-bold uppercase text-slate-500 dark:text-slate-400 block mb-1">
                   {isBg ? 'Такса / гараж (€)' : 'Rate / Garage (€)'}
                 </label>
                 <input
@@ -363,12 +363,12 @@ export function InstructionsTab({ onGoToDashboard }: InstructionsTabProps) {
                   min="0"
                   value={demoGarageRate}
                   onChange={(e) => setDemoGarageRate(parseFloat(e.target.value) || 0)}
-                  className="w-full px-2.5 py-1.5 text-xs font-bold bg-white border border-slate-300 rounded focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                  className="w-full px-2.5 py-1.5 text-xs font-bold bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 border border-slate-300 dark:border-slate-700 rounded focus:ring-2 focus:ring-indigo-500 focus:outline-none"
                 />
               </div>
 
               <div>
-                <label className="text-[10px] font-bold uppercase text-slate-500 block mb-1">
+                <label className="text-[10px] font-bold uppercase text-slate-500 dark:text-slate-400 block mb-1">
                   {isBg ? 'Стар дълг (€)' : 'Prev. Arrears (€)'}
                 </label>
                 <input
@@ -377,46 +377,46 @@ export function InstructionsTab({ onGoToDashboard }: InstructionsTabProps) {
                   min="0"
                   value={demoPrevDebt}
                   onChange={(e) => setDemoPrevDebt(parseFloat(e.target.value) || 0)}
-                  className="w-full px-2.5 py-1.5 text-xs font-bold bg-white border border-slate-300 rounded focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                  className="w-full px-2.5 py-1.5 text-xs font-bold bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 border border-slate-300 dark:border-slate-700 rounded focus:ring-2 focus:ring-indigo-500 focus:outline-none"
                 />
               </div>
             </div>
 
             {/* Calculated Breakdown Display */}
-            <div className="bg-white rounded-lg border border-indigo-200 p-4 grid grid-cols-2 md:grid-cols-5 gap-3 text-center">
-              <div className="p-2 bg-indigo-50/50 rounded">
-                <span className="text-[10px] uppercase font-bold text-slate-500 block">
+            <div className="bg-white dark:bg-slate-900 rounded-lg border border-indigo-200 dark:border-indigo-900/60 p-4 grid grid-cols-2 md:grid-cols-5 gap-3 text-center">
+              <div className="p-2 bg-indigo-50/50 dark:bg-indigo-950/40 rounded">
+                <span className="text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400 block">
                   {isBg ? 'Живущи такса' : 'Resident Dues'}
                 </span>
-                <span className="text-sm font-black text-indigo-700">€{demoResidentCost.toFixed(2)}</span>
+                <span className="text-sm font-black text-indigo-700 dark:text-indigo-300">€{demoResidentCost.toFixed(2)}</span>
               </div>
 
-              <div className="p-2 bg-amber-50/50 rounded">
-                <span className="text-[10px] uppercase font-bold text-slate-500 block">
+              <div className="p-2 bg-amber-50/50 dark:bg-amber-950/40 rounded">
+                <span className="text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400 block">
                   {isBg ? 'Гаражи такса' : 'Garage Dues'}
                 </span>
-                <span className="text-sm font-black text-amber-700">€{demoGarageCost.toFixed(2)}</span>
+                <span className="text-sm font-black text-amber-700 dark:text-amber-300">€{demoGarageCost.toFixed(2)}</span>
               </div>
 
-              <div className="p-2 bg-sky-50/50 rounded">
-                <span className="text-[10px] uppercase font-bold text-slate-500 block">
+              <div className="p-2 bg-sky-50/50 dark:bg-sky-950/40 rounded">
+                <span className="text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400 block">
                   {isBg ? 'Фонд Ремонт' : 'Repair Fund'}
                 </span>
-                <span className="text-sm font-black text-sky-700">€{demoRepairCost.toFixed(2)}</span>
+                <span className="text-sm font-black text-sky-700 dark:text-sky-300">€{demoRepairCost.toFixed(2)}</span>
               </div>
 
-              <div className="p-2 bg-slate-50 rounded">
-                <span className="text-[10px] uppercase font-bold text-slate-500 block">
+              <div className="p-2 bg-slate-50 dark:bg-slate-800 rounded">
+                <span className="text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400 block">
                   {isBg ? 'Асансьор базова' : 'Elevator Base'}
                 </span>
-                <span className="text-sm font-black text-slate-700">€{demoElevatorBase.toFixed(2)}</span>
+                <span className="text-sm font-black text-slate-700 dark:text-slate-200">€{demoElevatorBase.toFixed(2)}</span>
               </div>
 
-              <div className="p-2 bg-emerald-50 rounded col-span-2 md:col-span-1 border border-emerald-200">
-                <span className="text-[10px] uppercase font-bold text-emerald-800 block">
+              <div className="p-2 bg-emerald-50 dark:bg-emerald-950/40 rounded col-span-2 md:col-span-1 border border-emerald-200 dark:border-emerald-800/80">
+                <span className="text-[10px] uppercase font-bold text-emerald-800 dark:text-emerald-300 block">
                   {isBg ? 'Общо за плащане' : 'Total to Pay'}
                 </span>
-                <span className="text-base font-black text-emerald-700">€{demoTotalToPay.toFixed(2)}</span>
+                <span className="text-base font-black text-emerald-700 dark:text-emerald-400">€{demoTotalToPay.toFixed(2)}</span>
               </div>
             </div>
           </div>
@@ -425,16 +425,16 @@ export function InstructionsTab({ onGoToDashboard }: InstructionsTabProps) {
 
       {/* SECTION 2: FIXED VS VARIABLE BILLS */}
       {(activeSection === 'all' || activeSection === 'bills') && (
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 space-y-6">
-          <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
-            <div className="p-2.5 bg-indigo-50 border border-indigo-100 rounded-lg text-indigo-600">
+        <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm p-6 space-y-6 transition-colors">
+          <div className="flex items-center gap-3 border-b border-slate-100 dark:border-slate-800 pb-4">
+            <div className="p-2.5 bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-100 dark:border-indigo-900/60 rounded-lg text-indigo-600 dark:text-indigo-400">
               <Repeat className="w-6 h-6" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-slate-800">
+              <h2 className="text-lg font-bold text-slate-800 dark:text-slate-100">
                 {isBg ? '2. Постоянни vs. Променливи сметки и обновяване на такси' : '2. Fixed vs. Variable Monthly Bills & Dues Updates'}
               </h2>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 {isBg 
                   ? 'Как работят превключвателите Fixed/Variable и бутонът за автоматично изчисляване' 
                   : 'How Fixed/Variable switches operate and how automatic recalculation works'}
@@ -444,42 +444,42 @@ export function InstructionsTab({ onGoToDashboard }: InstructionsTabProps) {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Fixed Bills Card */}
-            <div className="border border-indigo-200 bg-indigo-50/30 rounded-xl p-5 space-y-3">
+            <div className="border border-indigo-200 dark:border-indigo-900/60 bg-indigo-50/30 dark:bg-indigo-950/30 rounded-xl p-5 space-y-3">
               <div className="flex items-center gap-2">
                 <span className="px-2.5 py-1 text-xs font-black uppercase rounded bg-indigo-600 text-white shadow-2xs">
                   {isBg ? 'Fixed (Автоматично)' : 'Fixed (Auto-Rollover)'}
                 </span>
-                <h3 className="text-sm font-bold text-slate-800">
+                <h3 className="text-sm font-bold text-slate-800 dark:text-slate-100">
                   {isBg ? 'Постоянни разходи с авто-прехвърляне' : 'Fixed Recurring Expenses'}
                 </h3>
               </div>
-              <p className="text-xs text-slate-600 leading-relaxed">
+              <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
                 {isBg
                   ? 'Когато дадена сметка е маркирана с бутон "Fixed", въведената сума автоматично се копира и запазва за следващия месец при натискане на "Следващ месец". Използва се за постоянни абонаменти: чистач, абонамент асансьор, домоуправител, градинар и целева сума за фонд ремонт.'
                   : 'When a bill is toggled as "Fixed", its amount is automatically copied into the new month when clicking "Next Month". Perfect for fixed service agreements: staircase cleaning, elevator maintenance contracts, security, landscaping, and steady repair fund targets.'}
               </p>
-              <div className="flex items-center gap-2 text-[11px] text-indigo-800 font-semibold bg-indigo-100/60 p-2.5 rounded">
-                <CheckCircle2 className="w-4 h-4 text-indigo-600 flex-shrink-0" />
+              <div className="flex items-center gap-2 text-[11px] text-indigo-800 dark:text-indigo-300 font-semibold bg-indigo-100/60 dark:bg-indigo-950/60 p-2.5 rounded">
+                <CheckCircle2 className="w-4 h-4 text-indigo-600 dark:text-indigo-400 flex-shrink-0" />
                 <span>{isBg ? 'Спестява време от повторно въвеждане всеки месец.' : 'Saves time from re-entering identical bills every month.'}</span>
               </div>
             </div>
 
             {/* Variable Bills Card */}
-            <div className="border border-slate-200 bg-slate-50 rounded-xl p-5 space-y-3">
+            <div className="border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/40 rounded-xl p-5 space-y-3">
               <div className="flex items-center gap-2">
-                <span className="px-2.5 py-1 text-xs font-black uppercase rounded bg-slate-200 text-slate-700">
+                <span className="px-2.5 py-1 text-xs font-black uppercase rounded bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200">
                   {isBg ? 'Variable (Нулира се)' : 'Variable (Monthly Reset)'}
                 </span>
-                <h3 className="text-sm font-bold text-slate-800">
+                <h3 className="text-sm font-bold text-slate-800 dark:text-slate-100">
                   {isBg ? 'Променливи сметки по фактура' : 'Variable Invoiced Utilities'}
                 </h3>
               </div>
-              <p className="text-xs text-slate-600 leading-relaxed">
+              <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
                 {isBg
                   ? 'Когато дадена сметка е маркирана с бутон "Variable", сумата ѝ автоматично се нулира на 0.00 € за новия месец. Това ви подсказва да въведете новопристигналата фактура за съответния месец (напр. електроенергия стълбище, ток асансьор, извънреден ремонт).'
                   : 'When marked as "Variable", the bill resets to €0.00 in the new month. This prompts you to enter the new utility invoice (e.g. fluctuating staircase power, elevator power, or one-time maintenance repairs).'}
               </p>
-              <div className="flex items-center gap-2 text-[11px] text-slate-700 font-semibold bg-white p-2.5 rounded border border-slate-200">
+              <div className="flex items-center gap-2 text-[11px] text-slate-700 dark:text-slate-300 font-semibold bg-white dark:bg-slate-900 p-2.5 rounded border border-slate-200 dark:border-slate-700">
                 <RotateCcw className="w-4 h-4 text-amber-500 flex-shrink-0" />
                 <span>{isBg ? 'Предотвратява грешно таксуване със стара фактура.' : 'Prevents accidental charging with previous invoice numbers.'}</span>
               </div>
@@ -509,16 +509,16 @@ export function InstructionsTab({ onGoToDashboard }: InstructionsTabProps) {
 
       {/* SECTION 3: FUNDS & CASHFLOW */}
       {(activeSection === 'all' || activeSection === 'funds') && (
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 space-y-6">
-          <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
-            <div className="p-2.5 bg-indigo-50 border border-indigo-100 rounded-lg text-indigo-600">
+        <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm p-6 space-y-6 transition-colors">
+          <div className="flex items-center gap-3 border-b border-slate-100 dark:border-slate-800 pb-4">
+            <div className="p-2.5 bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-100 dark:border-indigo-900/60 rounded-lg text-indigo-600 dark:text-indigo-400">
               <Coins className="w-6 h-6" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-slate-800">
+              <h2 className="text-lg font-bold text-slate-800 dark:text-slate-100">
                 {isBg ? '3. Проследяване на фондове и касов баланс' : '3. Fund Trackers & Cash Flow Ledger'}
               </h2>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 {isBg 
                   ? 'Как се формира крайният баланс, приходите и разходите' 
                   : 'How ending balances, incomes, and expenditures are calculated'}
@@ -527,27 +527,27 @@ export function InstructionsTab({ onGoToDashboard }: InstructionsTabProps) {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="bg-slate-50 rounded-lg p-4 border border-slate-200 space-y-2">
-              <span className="text-[10px] font-bold uppercase text-slate-500">{isBg ? 'Начален баланс' : 'Starting Balance'}</span>
-              <p className="text-xs text-slate-700">
+            <div className="bg-slate-50 dark:bg-slate-800/40 rounded-lg p-4 border border-slate-200 dark:border-slate-700 space-y-2">
+              <span className="text-[10px] font-bold uppercase text-slate-500 dark:text-slate-400">{isBg ? 'Начален баланс' : 'Starting Balance'}</span>
+              <p className="text-xs text-slate-700 dark:text-slate-300">
                 {isBg
                   ? 'Прехвърля се автоматично от крайния баланс на предходния месец. Може да бъде коригиран ръчно при необходимост.'
                   : 'Auto-carried from the previous month\'s ending balance. Can be directly edited if opening balance adjustments are needed.'}
               </p>
             </div>
 
-            <div className="bg-emerald-50/60 rounded-lg p-4 border border-emerald-200 space-y-2">
-              <span className="text-[10px] font-bold uppercase text-emerald-800">{isBg ? 'Приходи (Събрани)' : 'Incomes (Collected)'}</span>
-              <p className="text-xs text-slate-700">
+            <div className="bg-emerald-50/60 dark:bg-emerald-950/30 rounded-lg p-4 border border-emerald-200 dark:border-emerald-800/60 space-y-2">
+              <span className="text-[10px] font-bold uppercase text-emerald-800 dark:text-emerald-300">{isBg ? 'Приходи (Събрани)' : 'Incomes (Collected)'}</span>
+              <p className="text-xs text-slate-700 dark:text-slate-300">
                 {isBg
                   ? 'Всички реално събрани плащания от собствениците (разделени прозрачно на "В брой" и "Revolut").'
                   : 'All payments marked as collected from residents (transparently separated into "Cash" and "Revolut").'}
               </p>
             </div>
 
-            <div className="bg-rose-50/60 rounded-lg p-4 border border-rose-200 space-y-2">
-              <span className="text-[10px] font-bold uppercase text-rose-800">{isBg ? 'Разходи (Платени сметки)' : 'Expenses (Paid Bills)'}</span>
-              <p className="text-xs text-slate-700">
+            <div className="bg-rose-50/60 dark:bg-rose-950/30 rounded-lg p-4 border border-rose-200 dark:border-rose-800/60 space-y-2">
+              <span className="text-[10px] font-bold uppercase text-rose-800 dark:text-rose-300">{isBg ? 'Разходи (Платени сметки)' : 'Expenses (Paid Bills)'}</span>
+              <p className="text-xs text-slate-700 dark:text-slate-300">
                 {isBg
                   ? 'Сумата на всички сметки и динамични разходи, маркирани като "Платени" (Paid) от домоуправителя.'
                   : 'The sum of all monthly bills and dynamic expenses marked as "Paid" by the building manager.'}
@@ -555,7 +555,7 @@ export function InstructionsTab({ onGoToDashboard }: InstructionsTabProps) {
             </div>
           </div>
 
-          <div className="bg-slate-100 p-4 rounded-lg text-center font-mono text-xs text-slate-800 font-bold border border-slate-200">
+          <div className="bg-slate-100 dark:bg-slate-800 p-4 rounded-lg text-center font-mono text-xs text-slate-800 dark:text-slate-200 font-bold border border-slate-200 dark:border-slate-700">
             {isBg ? 'Баланс в края на месеца = Начален баланс + Всички събрани приходи - Всички платени разходи' : 'Month-End Balance = Starting Balance + Total Incomes Collected - Total Paid Expenses'}
           </div>
         </div>
@@ -563,16 +563,16 @@ export function InstructionsTab({ onGoToDashboard }: InstructionsTabProps) {
 
       {/* SECTION 4: MONTHLY WORKFLOW */}
       {(activeSection === 'all' || activeSection === 'workflow') && (
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 space-y-6">
-          <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
-            <div className="p-2.5 bg-indigo-50 border border-indigo-100 rounded-lg text-indigo-600">
+        <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm p-6 space-y-6 transition-colors">
+          <div className="flex items-center gap-3 border-b border-slate-100 dark:border-slate-800 pb-4">
+            <div className="p-2.5 bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-100 dark:border-indigo-900/60 rounded-lg text-indigo-600 dark:text-indigo-400">
               <Calendar className="w-6 h-6" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-slate-800">
+              <h2 className="text-lg font-bold text-slate-800 dark:text-slate-100">
                 {isBg ? '4. Препоръчителен месечен работен процес за домоуправителя' : '4. Recommended Monthly Workflow for Building Managers'}
               </h2>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 {isBg 
                   ? 'Четири лесни стъпки за водене на месечните отчети без грешки' 
                   : 'Four simple steps to manage monthly entrance dues without mistakes'}
@@ -611,13 +611,13 @@ export function InstructionsTab({ onGoToDashboard }: InstructionsTabProps) {
                   : 'At the end of the month, click "Next Month". The system carries over ending fund balances, transfers unpaid dues into starting arrears, and prepares a fresh sheet.'
               }
             ].map((s) => (
-              <div key={s.step} className="flex items-start gap-4 p-4 rounded-lg bg-slate-50 border border-slate-200">
+              <div key={s.step} className="flex items-start gap-4 p-4 rounded-lg bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700">
                 <div className="w-10 h-10 rounded-lg bg-indigo-600 text-white font-black flex items-center justify-center flex-shrink-0 text-sm">
                   {s.step}
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-slate-800 mb-1">{s.title}</h3>
-                  <p className="text-xs text-slate-600 leading-relaxed">{s.desc}</p>
+                  <h3 className="text-sm font-bold text-slate-800 dark:text-slate-100 mb-1">{s.title}</h3>
+                  <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">{s.desc}</p>
                 </div>
               </div>
             ))}
@@ -627,16 +627,16 @@ export function InstructionsTab({ onGoToDashboard }: InstructionsTabProps) {
 
       {/* SECTION 5: FAQ & TROUBLESHOOTING */}
       {(activeSection === 'all' || activeSection === 'faq') && (
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 space-y-6">
-          <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
-            <div className="p-2.5 bg-indigo-50 border border-indigo-100 rounded-lg text-indigo-600">
+        <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm p-6 space-y-6 transition-colors">
+          <div className="flex items-center gap-3 border-b border-slate-100 dark:border-slate-800 pb-4">
+            <div className="p-2.5 bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-100 dark:border-indigo-900/60 rounded-lg text-indigo-600 dark:text-indigo-400">
               <HelpCircle className="w-6 h-6" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-slate-800">
+              <h2 className="text-lg font-bold text-slate-800 dark:text-slate-100">
                 {isBg ? '5. Често задавани въпроси и отговори (ЧЗВ)' : '5. Frequently Asked Questions (FAQ)'}
               </h2>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 {isBg 
                   ? 'Бързи отговори на най-честите казуси при управлението на входа' 
                   : 'Quick solutions for common apartment building management questions'}
@@ -648,17 +648,17 @@ export function InstructionsTab({ onGoToDashboard }: InstructionsTabProps) {
             {faqs.map((faq, idx) => {
               const isOpen = expandedFaq === idx;
               return (
-                <div key={idx} className="border border-slate-200 rounded-lg overflow-hidden transition-colors">
+                <div key={idx} className="border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden transition-colors">
                   <button
                     type="button"
                     onClick={() => setExpandedFaq(isOpen ? null : idx)}
-                    className="w-full p-4 text-left font-bold text-xs md:text-sm text-slate-800 flex items-center justify-between gap-4 bg-slate-50 hover:bg-slate-100 transition-colors cursor-pointer"
+                    className="w-full p-4 text-left font-bold text-xs md:text-sm text-slate-800 dark:text-slate-100 flex items-center justify-between gap-4 bg-slate-50 dark:bg-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
                   >
                     <span>{faq.q}</span>
-                    {isOpen ? <ChevronUp className="w-4 h-4 text-slate-500 flex-shrink-0" /> : <ChevronDown className="w-4 h-4 text-slate-500 flex-shrink-0" />}
+                    {isOpen ? <ChevronUp className="w-4 h-4 text-slate-500 dark:text-slate-400 flex-shrink-0" /> : <ChevronDown className="w-4 h-4 text-slate-500 dark:text-slate-400 flex-shrink-0" />}
                   </button>
                   {isOpen && (
-                    <div className="p-4 bg-white text-xs text-slate-600 leading-relaxed border-t border-slate-200">
+                    <div className="p-4 bg-white dark:bg-slate-900 text-xs text-slate-600 dark:text-slate-300 leading-relaxed border-t border-slate-200 dark:border-slate-700">
                       {faq.a}
                     </div>
                   )}

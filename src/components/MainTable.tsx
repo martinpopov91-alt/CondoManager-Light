@@ -56,9 +56,9 @@ export function MainTable({ config, apartments, onApartmentChange, onConfigChang
   };
 
   return (
-    <div className="bg-white rounded border border-slate-200 shadow-sm overflow-hidden mb-4 flex flex-col">
-      <div className="bg-slate-50 border-b border-slate-200 p-2.5 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
-        <h3 className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+    <div className="bg-white dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden mb-4 flex flex-col transition-colors">
+      <div className="bg-slate-50 dark:bg-slate-800/60 border-b border-slate-200 dark:border-slate-800 p-2.5 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+        <h3 className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
           {t('table.recordsTitle') || 'Apartment Dues & Records'}
         </h3>
         <div className="flex items-center gap-3 print:hidden flex-wrap">
@@ -67,17 +67,17 @@ export function MainTable({ config, apartments, onApartmentChange, onConfigChang
             <input
               type="text"
               placeholder={t('table.search')}
-              className="pl-6 pr-2 py-1 text-xs border border-slate-300 rounded focus:outline-none focus:ring-1 focus:ring-indigo-500 w-full sm:w-48 bg-white"
+              className="pl-6 pr-2 py-1 text-xs border border-slate-300 dark:border-slate-700 rounded focus:outline-none focus:ring-1 focus:ring-indigo-500 w-full sm:w-48 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
           {emptyCount > 0 && (
             <span
-              className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-amber-50 text-amber-800 border border-amber-200 rounded text-[10px] font-bold whitespace-nowrap shadow-2xs"
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-amber-50 dark:bg-amber-950/50 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800 rounded text-[10px] font-bold whitespace-nowrap shadow-2xs"
               title={t('table.emptyTooltip')}
             >
-              <DoorClosed className="w-3 h-3 text-amber-600" />
+              <DoorClosed className="w-3 h-3 text-amber-600 dark:text-amber-400" />
               <span>{emptyCount} {t('table.emptyCount') || 'Empty'}</span>
             </span>
           )}
@@ -94,7 +94,7 @@ export function MainTable({ config, apartments, onApartmentChange, onConfigChang
           {selectedCount > 0 && (
             <button
               onClick={onBulkMarkPaid}
-              className="text-xs text-indigo-600 font-bold uppercase hover:underline whitespace-nowrap cursor-pointer"
+              className="text-xs text-indigo-600 dark:text-indigo-400 font-bold uppercase hover:underline whitespace-nowrap cursor-pointer"
             >
               {t('table.bulkMarkPaid')} ({selectedCount})
             </button>
@@ -103,12 +103,12 @@ export function MainTable({ config, apartments, onApartmentChange, onConfigChang
       </div>
       <div className="overflow-x-auto print:overflow-visible">
         <table className="w-full text-left border-collapse min-w-[1100px] print:min-w-0 print:text-[10px]">
-          <thead className="bg-slate-50 sticky top-0">
-            <tr className="border-b border-slate-200">
-              <th className="p-2 text-[10px] font-bold text-slate-400 uppercase w-10 sticky left-0 z-10 bg-slate-50 print:hidden">
+          <thead className="bg-slate-50 dark:bg-slate-800/80 sticky top-0">
+            <tr className="border-b border-slate-200 dark:border-slate-800">
+              <th className="p-2 text-[10px] font-bold text-slate-400 uppercase w-10 sticky left-0 z-10 bg-slate-50 dark:bg-slate-800 print:hidden">
                 <input 
                   type="checkbox" 
-                  className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+                  className="rounded border-slate-300 dark:border-slate-600 text-indigo-600 focus:ring-indigo-500 bg-white dark:bg-slate-800"
                   onChange={(e) => {
                     const checked = e.target.checked;
                     filteredApartments.forEach(a => onApartmentChange(a.id, 'selected', checked));
@@ -116,7 +116,7 @@ export function MainTable({ config, apartments, onApartmentChange, onConfigChang
                   checked={filteredApartments.length > 0 && filteredApartments.every(a => a.selected)}
                 />
               </th>
-              <th className="p-2 text-[10px] font-bold text-slate-400 uppercase sticky left-10 z-10 bg-slate-50">{t('table.apt')}</th>
+              <th className="p-2 text-[10px] font-bold text-slate-400 uppercase sticky left-10 z-10 bg-slate-50 dark:bg-slate-800">{t('table.apt')}</th>
               <th className="p-2 text-[10px] font-bold text-slate-400 uppercase">{t('table.owner')}</th>
               <th className="p-2 text-[10px] font-bold text-slate-400 uppercase text-center" title={t('table.emptyTooltip')}>{t('table.empty')}</th>
               <th className="p-2 text-[10px] font-bold text-slate-400 uppercase text-center">{t('table.idealParts')}</th>
@@ -132,7 +132,7 @@ export function MainTable({ config, apartments, onApartmentChange, onConfigChang
               <th className="p-2 text-[10px] font-bold text-slate-400 uppercase text-center print:hidden">{t('table.actions') || 'Actions'}</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100">
+          <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60">
             {filteredApartments.map((state) => {
               const apt = config.find(a => a.id === state.id);
               if (!apt) return null;
@@ -141,22 +141,22 @@ export function MainTable({ config, apartments, onApartmentChange, onConfigChang
               const isAptEmpty = !!state.isEmpty;
 
               const stickyCellBg = isOverdue
-                ? "bg-rose-100/95 text-rose-950"
+                ? "bg-rose-100/95 dark:bg-rose-950/90 text-rose-950 dark:text-rose-200"
                 : state.status === 'Paid'
-                  ? "bg-emerald-50 text-slate-800"
-                  : (isAptEmpty ? "bg-amber-50/60 text-slate-800" : "bg-white text-slate-800");
+                  ? "bg-emerald-50 dark:bg-emerald-950/50 text-slate-800 dark:text-slate-100"
+                  : (isAptEmpty ? "bg-amber-50/60 dark:bg-amber-950/40 text-slate-800 dark:text-slate-100" : "bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100");
 
               return (
                 <tr key={state.id} className={cn(
                   "transition-colors", 
-                  state.status === 'Paid' ? "bg-emerald-50/30 hover:bg-emerald-50" : "hover:bg-slate-50",
-                  isOverdue ? "bg-rose-100/90 hover:bg-rose-200/90 border-l-4 border-l-rose-600 font-medium text-rose-950" : "",
-                  isAptEmpty && !isOverdue && state.status !== 'Paid' ? "bg-amber-50/20" : ""
+                  state.status === 'Paid' ? "bg-emerald-50/30 dark:bg-emerald-950/20 hover:bg-emerald-50 dark:hover:bg-emerald-950/40" : "hover:bg-slate-50 dark:hover:bg-slate-800/50",
+                  isOverdue ? "bg-rose-100/90 dark:bg-rose-950/40 hover:bg-rose-200/90 dark:hover:bg-rose-900/50 border-l-4 border-l-rose-600 font-medium text-rose-950 dark:text-rose-200" : "",
+                  isAptEmpty && !isOverdue && state.status !== 'Paid' ? "bg-amber-50/20 dark:bg-amber-950/20" : ""
                 )}>
                   <td className={cn("p-2 sticky left-0 z-10 print:hidden", stickyCellBg)}>
                     <input 
                       type="checkbox" 
-                      className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+                      className="rounded border-slate-300 dark:border-slate-600 text-indigo-600 focus:ring-indigo-500 bg-white dark:bg-slate-800"
                       checked={!!state.selected}
                       onChange={(e) => onApartmentChange(state.id, 'selected', e.target.checked)}
                     />
@@ -173,7 +173,7 @@ export function MainTable({ config, apartments, onApartmentChange, onConfigChang
                     )}
                     <input
                       type="text"
-                      className="w-16 px-1 py-0.5 text-xs font-bold border border-transparent hover:border-slate-300 focus:border-indigo-500 rounded bg-transparent focus:bg-white transition-colors"
+                      className="w-16 px-1 py-0.5 text-xs font-bold border border-transparent hover:border-slate-300 dark:hover:border-slate-700 focus:border-indigo-500 rounded bg-transparent focus:bg-white dark:focus:bg-slate-800 text-slate-800 dark:text-slate-100 transition-colors"
                       value={apt.name}
                       onChange={(e) => onConfigChange?.(apt.id, 'name', e.target.value)}
                       placeholder={t('table.aptName') || "Apt Name"}
@@ -182,7 +182,7 @@ export function MainTable({ config, apartments, onApartmentChange, onConfigChang
                   <td className="p-2">
                     <input
                       type="text"
-                      className="w-full min-w-[120px] px-1 py-0.5 text-xs border border-transparent hover:border-slate-300 focus:border-indigo-500 rounded bg-transparent focus:bg-white transition-colors"
+                      className="w-full min-w-[120px] px-1 py-0.5 text-xs border border-transparent hover:border-slate-300 dark:hover:border-slate-700 focus:border-indigo-500 rounded bg-transparent focus:bg-white dark:focus:bg-slate-800 text-slate-800 dark:text-slate-100 transition-colors"
                       value={apt.owner}
                       onChange={(e) => onConfigChange?.(apt.id, 'owner', e.target.value)}
                       placeholder={t('table.ownerName')}
@@ -199,19 +199,19 @@ export function MainTable({ config, apartments, onApartmentChange, onConfigChang
                       className={cn(
                         "inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold transition-all cursor-pointer border shadow-2xs whitespace-nowrap",
                         isAptEmpty
-                          ? "bg-amber-100 text-amber-900 border-amber-300 hover:bg-amber-200"
-                          : "bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-200 hover:text-slate-800"
+                          ? "bg-amber-100 dark:bg-amber-950/60 text-amber-900 dark:text-amber-200 border-amber-300 dark:border-amber-800 hover:bg-amber-200 dark:hover:bg-amber-900/60"
+                          : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700 hover:text-slate-800 dark:hover:text-slate-100"
                       )}
                       title={t('table.emptyTooltip')}
                     >
                       {isAptEmpty ? (
                         <>
-                          <DoorClosed className="w-3 h-3 text-amber-700" />
+                          <DoorClosed className="w-3 h-3 text-amber-700 dark:text-amber-400" />
                           <span>{t('table.empty')}</span>
                         </>
                       ) : (
                         <>
-                          <DoorOpen className="w-3 h-3 text-slate-400" />
+                          <DoorOpen className="w-3 h-3 text-slate-400 dark:text-slate-500" />
                           <span>{t('table.occupied')}</span>
                         </>
                       )}
@@ -222,7 +222,7 @@ export function MainTable({ config, apartments, onApartmentChange, onConfigChang
                       type="number"
                       min="0"
                       step="0.001"
-                      className="w-16 mx-auto px-1 py-0.5 text-xs border border-transparent hover:border-slate-300 focus:border-indigo-500 rounded bg-transparent focus:bg-white text-center block transition-colors"
+                      className="w-16 mx-auto px-1 py-0.5 text-xs border border-transparent hover:border-slate-300 dark:hover:border-slate-700 focus:border-indigo-500 rounded bg-transparent focus:bg-white dark:focus:bg-slate-800 text-slate-800 dark:text-slate-100 text-center block transition-colors"
                       value={apt.idealParts}
                       onChange={(e) => onConfigChange?.(apt.id, 'idealParts', parseFloat(e.target.value) || 0)}
                     />
@@ -232,10 +232,10 @@ export function MainTable({ config, apartments, onApartmentChange, onConfigChang
                       type="number"
                       min="0"
                       className={cn(
-                        "w-12 mx-auto px-1 py-0.5 text-xs border rounded bg-transparent focus:bg-white text-center block transition-colors",
+                        "w-12 mx-auto px-1 py-0.5 text-xs border rounded bg-transparent focus:bg-white dark:focus:bg-slate-800 text-slate-800 dark:text-slate-100 text-center block transition-colors",
                         isAptEmpty
-                          ? "border-amber-300 bg-amber-50/70 text-amber-800 line-through opacity-80 font-medium"
-                          : "border-transparent hover:border-slate-300 focus:border-indigo-500"
+                          ? "border-amber-300 dark:border-amber-800 bg-amber-50/70 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 line-through opacity-80 font-medium"
+                          : "border-transparent hover:border-slate-300 dark:hover:border-slate-700 focus:border-indigo-500"
                       )}
                       value={apt.peopleCount}
                       onChange={(e) => onConfigChange?.(apt.id, 'peopleCount', parseInt(e.target.value) || 0)}
@@ -246,7 +246,7 @@ export function MainTable({ config, apartments, onApartmentChange, onConfigChang
                     <input
                       type="number"
                       min="0"
-                      className="w-12 mx-auto px-1 py-0.5 text-xs border border-transparent hover:border-slate-300 focus:border-indigo-500 rounded bg-transparent focus:bg-white text-center block transition-colors"
+                      className="w-12 mx-auto px-1 py-0.5 text-xs border border-transparent hover:border-slate-300 dark:hover:border-slate-700 focus:border-indigo-500 rounded bg-transparent focus:bg-white dark:focus:bg-slate-800 text-slate-800 dark:text-slate-100 text-center block transition-colors"
                       value={apt.garageCount}
                       onChange={(e) => onConfigChange?.(apt.id, 'garageCount', parseInt(e.target.value) || 0)}
                     />
@@ -257,32 +257,36 @@ export function MainTable({ config, apartments, onApartmentChange, onConfigChang
                       min="0"
                       step="0.01"
                       className={cn(
-                        "w-16 px-1 py-0.5 text-xs border rounded text-right ml-auto block",
-                        isOverdue ? "border-rose-400 bg-rose-50 font-bold text-rose-800" : "border-slate-300 bg-slate-50"
+                        "w-16 px-1 py-0.5 text-xs border rounded text-right ml-auto block transition-colors",
+                        isOverdue 
+                          ? "border-rose-400 dark:border-rose-700 bg-rose-50 dark:bg-rose-950/50 font-bold text-rose-800 dark:text-rose-200" 
+                          : "border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-100"
                       )}
                       value={state.oldDebt || ''}
                       onChange={(e) => onApartmentChange(state.id, 'oldDebt', parseFloat(e.target.value) || 0)}
                     />
                   </td>
-                  <td className="p-2 text-xs text-right font-medium">
+                  <td className="p-2 text-xs text-right font-medium text-slate-800 dark:text-slate-200">
                     €{state.currentBill.toFixed(2)}
                     {isAptEmpty && (
                       <span 
-                        className="block text-[9px] text-amber-700 font-semibold"
+                        className="block text-[9px] text-amber-700 dark:text-amber-400 font-semibold"
                         title={isBg ? "Апартаментът е освободен от такси вход. Дължи само дял фонд ремонт и гаражи (ако има)." : "Exempt from living dues. Only pays repair share & garage dues (if any)."}
                       >
                         {isBg ? "освободен от вход" : "no living fees"}
                       </span>
                     )}
                   </td>
-                  <td className={cn("p-2 text-xs font-bold text-right", isOverdue ? "text-rose-700 font-extrabold text-sm" : "text-slate-900")}>
+                  <td className={cn("p-2 text-xs font-bold text-right", isOverdue ? "text-rose-700 dark:text-rose-400 font-extrabold text-sm" : "text-slate-900 dark:text-slate-100")}>
                     €{state.grandTotal.toFixed(2)}
                   </td>
                   <td className="p-2">
                     <select
                       className={cn(
-                        "w-full px-2 py-0.5 text-[10px] font-bold uppercase rounded cursor-pointer text-center",
-                        state.status === 'Paid' ? "bg-emerald-100 text-emerald-700" : (isOverdue ? "bg-rose-600 text-white font-extrabold" : "bg-rose-100 text-rose-700")
+                        "w-full px-2 py-0.5 text-[10px] font-bold uppercase rounded cursor-pointer text-center border transition-colors",
+                        state.status === 'Paid' 
+                          ? "bg-emerald-100 dark:bg-emerald-950/70 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800" 
+                          : (isOverdue ? "bg-rose-600 text-white font-extrabold border-rose-700" : "bg-rose-100 dark:bg-rose-950/70 text-rose-700 dark:text-rose-300 border-rose-300 dark:border-rose-800")
                       )}
                       value={state.status}
                       onChange={(e) => {
@@ -308,8 +312,8 @@ export function MainTable({ config, apartments, onApartmentChange, onConfigChang
                       className={cn(
                         "w-20 px-1 py-0.5 text-xs border rounded text-right ml-auto block transition-colors",
                         state.paidAmount && state.paidAmount > state.grandTotal && state.grandTotal > 0
-                          ? "border-emerald-500 bg-emerald-100 font-bold text-emerald-900 shadow-xs"
-                          : "border-slate-300 bg-slate-50"
+                          ? "border-emerald-500 bg-emerald-100 dark:bg-emerald-950/70 font-bold text-emerald-900 dark:text-emerald-200 shadow-xs"
+                          : "border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-100"
                       )}
                       value={
                         state.paidAmount !== undefined && state.paidAmount !== null && state.paidAmount > 0
@@ -330,9 +334,9 @@ export function MainTable({ config, apartments, onApartmentChange, onConfigChang
                         "w-full px-2 py-0.5 text-[10px] font-bold uppercase rounded cursor-pointer text-center transition-colors shadow-xs",
                         state.status === 'Paid'
                           ? (state.paymentMethod === 'revolut'
-                              ? "bg-sky-100 text-sky-800 border border-sky-300"
-                              : "bg-emerald-100 text-emerald-800 border border-emerald-300")
-                          : "bg-slate-100 text-slate-400 border border-slate-200"
+                              ? "bg-sky-100 dark:bg-sky-950/70 text-sky-800 dark:text-sky-300 border border-sky-300 dark:border-sky-800"
+                              : "bg-emerald-100 dark:bg-emerald-950/70 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800")
+                          : "bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-700"
                       )}
                       value={state.paymentMethod || 'cash'}
                       onChange={(e) => onApartmentChange(state.id, 'paymentMethod', e.target.value)}
@@ -344,7 +348,7 @@ export function MainTable({ config, apartments, onApartmentChange, onConfigChang
                   <td className="p-2">
                     <input
                       type="text"
-                      className="w-full px-1 py-0.5 text-xs border border-slate-300 rounded bg-slate-50"
+                      className="w-full px-1 py-0.5 text-xs border border-slate-300 dark:border-slate-700 rounded bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500"
                       value={state.comment}
                       onChange={(e) => onApartmentChange(state.id, 'comment', e.target.value)}
                       placeholder={t('table.notes')}
@@ -357,7 +361,7 @@ export function MainTable({ config, apartments, onApartmentChange, onConfigChang
                         "inline-flex items-center gap-1 px-2 py-1 rounded text-[10px] font-extrabold uppercase shadow-sm transition-all whitespace-nowrap cursor-pointer",
                         isOverdue
                           ? "bg-rose-600 hover:bg-rose-700 text-white"
-                          : "bg-slate-200 hover:bg-slate-300 text-slate-700"
+                          : "bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200"
                       )}
                       title={isBg ? "Генериране на стандартизирано съобщение за напомняне" : "Generate standardized payment reminder message"}
                     >

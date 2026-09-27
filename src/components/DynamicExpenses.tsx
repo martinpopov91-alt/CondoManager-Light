@@ -49,7 +49,7 @@ export function DynamicExpenses({ expenses, onAdd, onRemove, onOpenExpensesRepor
   };
 
   return (
-    <div className="bg-slate-800 text-white rounded border border-slate-900 shadow-sm p-3.5 mb-4 flex flex-col">
+    <div className="bg-slate-800 dark:bg-slate-900 text-white rounded border border-slate-900 dark:border-slate-800 shadow-sm p-3.5 mb-4 flex flex-col transition-colors">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <h3 className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
@@ -59,7 +59,7 @@ export function DynamicExpenses({ expenses, onAdd, onRemove, onOpenExpensesRepor
             <button
               type="button"
               onClick={onOpenExpensesReport}
-              className="text-[9px] font-bold text-indigo-300 hover:text-white flex items-center gap-1 bg-slate-700/90 hover:bg-slate-700 px-2 py-0.5 rounded cursor-pointer transition-colors border border-slate-600/50"
+              className="text-[9px] font-bold text-indigo-300 hover:text-white flex items-center gap-1 bg-slate-700/90 hover:bg-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700 px-2 py-0.5 rounded cursor-pointer transition-colors border border-slate-600/50 dark:border-slate-700"
               title={isBg ? "Отвори пълен отчет за разходите за текущия и предходните месеци" : "View multi-month expenses report"}
             >
               <Receipt className="w-3 h-3 text-indigo-400" />
@@ -78,7 +78,7 @@ export function DynamicExpenses({ expenses, onAdd, onRemove, onOpenExpensesRepor
         <input
           type="text"
           placeholder={t('dynamic.titlePlaceholder') || "Expense title..."}
-          className="flex-1 px-2.5 py-1.5 text-xs border border-slate-700 bg-slate-900 rounded text-white focus:outline-none focus:ring-1 focus:ring-indigo-500"
+          className="flex-1 px-2.5 py-1.5 text-xs border border-slate-700 dark:border-slate-700 bg-slate-900 dark:bg-slate-950 rounded text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 placeholder-slate-500"
           value={title}
           onChange={e => setTitle(e.target.value)}
         />
@@ -87,12 +87,12 @@ export function DynamicExpenses({ expenses, onAdd, onRemove, onOpenExpensesRepor
           min="0"
           step="0.01"
           placeholder={t('dynamic.costPlaceholder') || "Cost (EUR)"}
-          className="w-24 px-2 py-1.5 text-xs border border-slate-700 bg-slate-900 rounded text-white focus:outline-none focus:ring-1 focus:ring-indigo-500"
+          className="w-24 px-2 py-1.5 text-xs border border-slate-700 dark:border-slate-700 bg-slate-900 dark:bg-slate-950 rounded text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 placeholder-slate-500"
           value={cost}
           onChange={e => setCost(e.target.value)}
         />
         <select
-          className="w-36 px-2 py-1.5 text-xs border border-slate-700 bg-slate-900 rounded text-white focus:outline-none focus:ring-1 focus:ring-indigo-500"
+          className="w-36 px-2 py-1.5 text-xs border border-slate-700 dark:border-slate-700 bg-slate-900 dark:bg-slate-950 rounded text-white focus:outline-none focus:ring-1 focus:ring-indigo-500"
           value={category}
           onChange={e => setCategory(e.target.value as any)}
         >
@@ -114,7 +114,7 @@ export function DynamicExpenses({ expenses, onAdd, onRemove, onOpenExpensesRepor
       <div className="flex-1 overflow-auto space-y-2 max-h-56">
         {expenses.length > 0 ? (
           expenses.map(expense => (
-            <div key={expense.id} className="bg-slate-700/80 hover:bg-slate-700 p-2.5 rounded relative group transition-colors border border-slate-600/50">
+            <div key={expense.id} className="bg-slate-700/80 hover:bg-slate-700 dark:bg-slate-800/80 dark:hover:bg-slate-800 p-2.5 rounded relative group transition-colors border border-slate-600/50 dark:border-slate-700">
               <div className="text-xs font-bold text-white pr-6">{expense.title}</div>
               <div className="flex justify-between items-center mt-1">
                 <span className="text-[10px] text-slate-300 font-medium">

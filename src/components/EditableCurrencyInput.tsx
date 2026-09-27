@@ -56,7 +56,7 @@ export function EditableCurrencyInput({
 
   return (
     <div
-      className="inline-flex items-center group relative cursor-pointer rounded px-1 -mx-1 transition-colors hover:bg-slate-700/40 print:hover:bg-transparent"
+      className="inline-flex items-center group relative cursor-pointer rounded px-1 -mx-1 transition-colors hover:bg-black/5 dark:hover:bg-white/10 print:hover:bg-transparent"
       title={title}
     >
       <input

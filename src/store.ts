@@ -589,7 +589,10 @@ export function useCondoState() {
         currentBill,
         grandTotal,
         monthsInDebt,
-        repairFundShare: myRepairFixed
+        repairFundShare: myRepairFixed,
+        generalShare: myGeneral,
+        maintShare: myMaint,
+        garageShare: myGarage
       };
     });
 
@@ -647,7 +650,10 @@ export function useCondoState() {
       repairFixedPerPart,
       totalMonthlyDues,
       revolutCollected,
-      cashCollected
+      cashCollected,
+      totalPeople,
+      totalGarages,
+      totalParts
     };
 
   }, [monthData, config]);

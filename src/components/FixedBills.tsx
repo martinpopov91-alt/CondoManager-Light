@@ -118,28 +118,28 @@ export function FixedBills({ bills, onChange, rates, onRecalculate, onOpenExpens
       id: 'general', 
       title: t('bills.catGeneral') || 'General Entrance', 
       icon: Building2, 
-      color: 'text-indigo-600 bg-indigo-50 border-indigo-100',
+      color: 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/50 border-indigo-100 dark:border-indigo-900/50',
       filter: (b: FixedBill) => b.category === 'general'
     },
     { 
       id: 'maintenance', 
       title: t('bills.catMaintenance') || 'Maintenance & Grounds', 
       icon: Zap, 
-      color: 'text-emerald-600 bg-emerald-50 border-emerald-100',
+      color: 'text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/50 border-emerald-100 dark:border-emerald-900/50',
       filter: (b: FixedBill) => b.category === 'maintenance'
     },
     { 
       id: 'garage', 
       title: t('bills.catGarage') || 'Garages & Power', 
       icon: Car, 
-      color: 'text-amber-600 bg-amber-50 border-amber-100',
+      color: 'text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/50 border-amber-100 dark:border-amber-900/50',
       filter: (b: FixedBill) => b.category === 'garage'
     },
     { 
       id: 'yearly', 
       title: t('bills.catYearly') || 'Yearly Contracts', 
       icon: Calendar, 
-      color: 'text-sky-600 bg-sky-50 border-sky-100',
+      color: 'text-sky-600 dark:text-sky-400 bg-sky-50 dark:bg-sky-950/50 border-sky-100 dark:border-sky-900/50',
       filter: (b: FixedBill) => b.category === 'yearly'
     },
   ];
@@ -152,18 +152,18 @@ export function FixedBills({ bills, onChange, rates, onRecalculate, onOpenExpens
   const totalDues = rates?.totalMonthlyDues ?? 0;
 
   return (
-    <div className="bg-white rounded-lg border border-slate-200 shadow-sm overflow-hidden p-4 md:p-5 mb-6">
+    <div className="bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden p-4 md:p-5 mb-6 transition-colors">
       {/* Header & Section Title */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-4 mb-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 dark:border-slate-800 pb-4 mb-4">
         <div className="flex items-center gap-3">
-          <div className="p-2.5 bg-indigo-50 border border-indigo-100 rounded-lg text-indigo-600">
+          <div className="p-2.5 bg-indigo-50 dark:bg-indigo-950/50 border border-indigo-100 dark:border-indigo-900/50 rounded-lg text-indigo-600 dark:text-indigo-400">
             <Receipt className="w-5 h-5" />
           </div>
           <div>
-            <h2 className="text-base font-bold text-slate-800 flex items-center gap-2">
+            <h2 className="text-base font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
               {t('bills.dashboardTitle') || 'Monthly Bills & Utilities'}
             </h2>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-slate-500 dark:text-slate-400">
               {t('bills.dashboardSubtitle') || 'Configure entrance expenses. Mark bills as Fixed to auto-transfer amounts next month.'}
             </p>
           </div>
@@ -171,13 +171,13 @@ export function FixedBills({ bills, onChange, rates, onRecalculate, onOpenExpens
 
         {/* Action Controls & Calculate Button */}
         <div className="flex items-center gap-2.5 flex-wrap self-start md:self-auto">
-          <div className="flex items-center gap-2 text-[10px] text-slate-500 bg-slate-50 px-3 py-1.5 rounded-md border border-slate-200">
-            <HelpCircle className="w-3.5 h-3.5 text-indigo-500 flex-shrink-0" />
+          <div className="flex items-center gap-2 text-[10px] text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-800/60 px-3 py-1.5 rounded-md border border-slate-200 dark:border-slate-700">
+            <HelpCircle className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400 flex-shrink-0" />
             <span>
               {isBg ? (
                 <>Постоянните сметки се прехвърлят автоматично. Променливите се нулират всеки месец.</>
               ) : (
-                <><strong className="text-indigo-600">Fixed</strong> bills auto-carry over. <strong className="text-slate-700">Variable</strong> bills reset.</>
+                <><strong className="text-indigo-600 dark:text-indigo-400">Fixed</strong> bills auto-carry over. <strong className="text-slate-700 dark:text-slate-300">Variable</strong> bills reset.</>
               )}
             </span>
           </div>
@@ -186,10 +186,10 @@ export function FixedBills({ bills, onChange, rates, onRecalculate, onOpenExpens
             <button
               type="button"
               onClick={onOpenExpensesReport}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-300 shadow-2xs transition-all cursor-pointer"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700 shadow-2xs transition-all cursor-pointer"
               title={isBg ? "Преглед на подробния отчет за разходите и сравнение с предходни месеци" : "View multi-month expenses report"}
             >
-              <Receipt className="w-3.5 h-3.5 text-indigo-600" />
+              <Receipt className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
               <span>{t('reports.openExpensesReport') || (isBg ? 'Отчет за разходите' : 'Expenses Report')}</span>
             </button>
           )}
@@ -316,62 +316,62 @@ export function FixedBills({ bills, onChange, rates, onRecalculate, onOpenExpens
 
       {/* KPI Cards Summary Bar */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5">
-        <div className="bg-slate-50/80 border border-slate-200/80 p-3 rounded-lg flex flex-col justify-between">
-          <div className="flex justify-between items-center text-slate-500 mb-1">
+        <div className="bg-slate-50/80 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/80 p-3 rounded-lg flex flex-col justify-between transition-colors">
+          <div className="flex justify-between items-center text-slate-500 dark:text-slate-400 mb-1">
             <span className="text-[10px] font-bold uppercase tracking-wider">{t('bills.totalBills') || 'Total Monthly Bills'}</span>
-            <Coins className="w-3.5 h-3.5 text-slate-400" />
+            <Coins className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
           </div>
           <div className="flex items-baseline gap-1">
-            <span className="text-lg font-black text-slate-800">{totalAmount.toFixed(2)}</span>
-            <span className="text-xs font-bold text-slate-500">EUR</span>
+            <span className="text-lg font-black text-slate-800 dark:text-slate-100">{totalAmount.toFixed(2)}</span>
+            <span className="text-xs font-bold text-slate-500 dark:text-slate-400">EUR</span>
           </div>
         </div>
 
-        <div className="bg-indigo-50/50 border border-indigo-100 p-3 rounded-lg flex flex-col justify-between">
-          <div className="flex justify-between items-center text-indigo-700 mb-1">
+        <div className="bg-indigo-50/50 dark:bg-indigo-950/40 border border-indigo-100 dark:border-indigo-900/60 p-3 rounded-lg flex flex-col justify-between transition-colors">
+          <div className="flex justify-between items-center text-indigo-700 dark:text-indigo-300 mb-1">
             <span className="text-[10px] font-bold uppercase tracking-wider">{t('bills.fixedAuto') || 'Fixed (Auto)'}</span>
-            <Repeat className="w-3.5 h-3.5 text-indigo-500" />
+            <Repeat className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400" />
           </div>
           <div className="flex items-baseline justify-between">
             <div className="flex items-baseline gap-1">
-              <span className="text-lg font-black text-indigo-950">{fixedTotal.toFixed(2)}</span>
-              <span className="text-xs font-bold text-indigo-600">EUR</span>
+              <span className="text-lg font-black text-indigo-950 dark:text-indigo-200">{fixedTotal.toFixed(2)}</span>
+              <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400">EUR</span>
             </div>
-            <span className="text-[10px] font-extrabold bg-indigo-100 text-indigo-700 px-1.5 py-0.5 rounded">
+            <span className="text-[10px] font-extrabold bg-indigo-100 dark:bg-indigo-900/60 text-indigo-700 dark:text-indigo-300 px-1.5 py-0.5 rounded">
               {fixedBills.length} {fixedBills.length === 1 ? (t('bills.singleBillUnit') || 'bill') : (t('bills.billUnit') || 'bills')}
             </span>
           </div>
         </div>
 
-        <div className="bg-slate-50/80 border border-slate-200/80 p-3 rounded-lg flex flex-col justify-between">
-          <div className="flex justify-between items-center text-slate-600 mb-1">
+        <div className="bg-slate-50/80 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/80 p-3 rounded-lg flex flex-col justify-between transition-colors">
+          <div className="flex justify-between items-center text-slate-600 dark:text-slate-400 mb-1">
             <span className="text-[10px] font-bold uppercase tracking-wider">{t('bills.variableReset') || 'Variable (Resets)'}</span>
             <Zap className="w-3.5 h-3.5 text-amber-500" />
           </div>
           <div className="flex items-baseline justify-between">
             <div className="flex items-baseline gap-1">
-              <span className="text-lg font-black text-slate-800">{variableTotal.toFixed(2)}</span>
-              <span className="text-xs font-bold text-slate-500">EUR</span>
+              <span className="text-lg font-black text-slate-800 dark:text-slate-100">{variableTotal.toFixed(2)}</span>
+              <span className="text-xs font-bold text-slate-500 dark:text-slate-400">EUR</span>
             </div>
-            <span className="text-[10px] font-bold bg-slate-200/70 text-slate-600 px-1.5 py-0.5 rounded">
+            <span className="text-[10px] font-bold bg-slate-200/70 dark:bg-slate-700 text-slate-600 dark:text-slate-300 px-1.5 py-0.5 rounded">
               {variableBills.length} {variableBills.length === 1 ? (t('bills.singleBillUnit') || 'bill') : (t('bills.billUnit') || 'bills')}
             </span>
           </div>
         </div>
 
-        <div className="bg-emerald-50/40 border border-emerald-100 p-3 rounded-lg flex flex-col justify-between">
-          <div className="flex justify-between items-center text-emerald-800 mb-1">
+        <div className="bg-emerald-50/40 dark:bg-emerald-950/30 border border-emerald-100 dark:border-emerald-900/50 p-3 rounded-lg flex flex-col justify-between transition-colors">
+          <div className="flex justify-between items-center text-emerald-800 dark:text-emerald-300 mb-1">
             <span className="text-[10px] font-bold uppercase tracking-wider">{t('bills.paidProgress') || 'Paid Progress'}</span>
-            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
           </div>
           <div>
             <div className="flex items-center justify-between mb-1">
-              <span className="text-xs font-extrabold text-emerald-950">
+              <span className="text-xs font-extrabold text-emerald-950 dark:text-emerald-200">
                 {isBg ? `${paidCount} от ${totalCount} платени` : `${paidCount} / ${totalCount} Paid`}
               </span>
-              <span className="text-[10px] font-black text-emerald-700">{paidPercent}%</span>
+              <span className="text-[10px] font-black text-emerald-700 dark:text-emerald-300">{paidPercent}%</span>
             </div>
-            <div className="w-full bg-emerald-100 rounded-full h-1.5 overflow-hidden">
+            <div className="w-full bg-emerald-100 dark:bg-emerald-950/80 rounded-full h-1.5 overflow-hidden">
               <div 
                 className="bg-emerald-500 h-1.5 rounded-full transition-all duration-300"
                 style={{ width: `${paidPercent}%` }}
@@ -464,17 +464,17 @@ export function FixedBills({ bills, onChange, rates, onRecalculate, onOpenExpens
           const catSubtotal = catBills.reduce((acc, b) => acc + (b.amount || 0), 0);
 
           return (
-            <div key={cat.id} className="bg-slate-50/60 rounded-lg border border-slate-200/80 p-3.5 flex flex-col justify-between">
+            <div key={cat.id} className="bg-slate-50/60 dark:bg-slate-800/40 rounded-lg border border-slate-200/80 dark:border-slate-700/80 p-3.5 flex flex-col justify-between transition-colors">
               <div>
                 {/* Category Header */}
-                <div className="flex items-center justify-between pb-2.5 mb-3 border-b border-slate-200/80">
+                <div className="flex items-center justify-between pb-2.5 mb-3 border-b border-slate-200/80 dark:border-slate-700/80">
                   <div className="flex items-center gap-2">
                     <div className={cn("p-1.5 rounded-md border", cat.color)}>
                       <CategoryIcon className="w-3.5 h-3.5" />
                     </div>
-                    <h3 className="text-xs font-bold text-slate-700">{cat.title}</h3>
+                    <h3 className="text-xs font-bold text-slate-700 dark:text-slate-200">{cat.title}</h3>
                   </div>
-                  <span className="text-xs font-extrabold text-slate-900 bg-white px-2 py-0.5 rounded border border-slate-200 shadow-2xs">
+                  <span className="text-xs font-extrabold text-slate-900 dark:text-slate-100 bg-white dark:bg-slate-800 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700 shadow-2xs">
                     €{catSubtotal.toFixed(2)}
                   </span>
                 </div>
@@ -489,21 +489,21 @@ export function FixedBills({ bills, onChange, rates, onRecalculate, onOpenExpens
                         className={cn(
                           "p-2 rounded-md border transition-all flex flex-col gap-2",
                           bill.isPaid 
-                            ? "bg-white border-emerald-200 shadow-2xs" 
+                            ? "bg-white dark:bg-slate-900 border-emerald-200 dark:border-emerald-800/60 shadow-2xs" 
                             : bill.isFixed 
-                              ? "bg-white border-indigo-200/80" 
-                              : "bg-white border-slate-200"
+                              ? "bg-white dark:bg-slate-900 border-indigo-200/80 dark:border-indigo-800/60" 
+                              : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800"
                         )}
                       >
                         {/* Top Row: Title & Paid Switch */}
                         <div className="flex items-center justify-between gap-2">
-                          <span className="text-xs font-bold text-slate-800 leading-tight truncate" title={displayName}>
+                          <span className="text-xs font-bold text-slate-800 dark:text-slate-100 leading-tight truncate" title={displayName}>
                             {displayName}
                           </span>
                           <div className="flex items-center gap-1.5 flex-shrink-0">
                             <span className={cn(
                               "text-[9px] font-bold px-1.5 py-0.2 rounded uppercase",
-                              bill.isPaid ? "bg-emerald-100 text-emerald-800" : "bg-slate-100 text-slate-500"
+                              bill.isPaid ? "bg-emerald-100 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300" : "bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400"
                             )}>
                               {bill.isPaid ? (t('bills.paid') || 'Paid') : (t('bills.pending') || 'Pending')}
                             </span>
@@ -515,7 +515,7 @@ export function FixedBills({ bills, onChange, rates, onRecalculate, onOpenExpens
                         </div>
 
                         {/* Bottom Row: Fixed Badge Button + Amount Input */}
-                        <div className="flex items-center justify-between gap-2 pt-1 border-t border-slate-100">
+                        <div className="flex items-center justify-between gap-2 pt-1 border-t border-slate-100 dark:border-slate-800">
                           <button
                             type="button"
                             onClick={() => onChange(bill.id, 'isFixed', !bill.isFixed)}
@@ -524,7 +524,7 @@ export function FixedBills({ bills, onChange, rates, onRecalculate, onOpenExpens
                               "px-2 py-0.5 text-[9px] font-extrabold uppercase rounded cursor-pointer transition-all flex items-center gap-1 border select-none",
                               bill.isFixed
                                 ? "bg-indigo-600 text-white border-indigo-600 shadow-2xs"
-                                : "bg-slate-100 text-slate-500 border-slate-200 hover:bg-slate-200 hover:text-slate-700"
+                                : "bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700"
                             )}
                           >
                             <Repeat className="w-2.5 h-2.5" />
@@ -536,12 +536,12 @@ export function FixedBills({ bills, onChange, rates, onRecalculate, onOpenExpens
                               type="number"
                               min="0"
                               step="0.01"
-                              className="w-full px-2 py-0.5 text-xs font-bold border border-slate-300 rounded focus:outline-none focus:ring-1 focus:ring-indigo-500 bg-slate-50 focus:bg-white text-right"
+                              className="w-full px-2 py-0.5 text-xs font-bold border border-slate-300 dark:border-slate-700 rounded focus:outline-none focus:ring-1 focus:ring-indigo-500 bg-slate-50 dark:bg-slate-950 focus:bg-white dark:focus:bg-slate-900 text-slate-900 dark:text-slate-100 text-right"
                               value={bill.amount || ''}
                               onChange={(e) => onChange(bill.id, 'amount', parseFloat(e.target.value) || 0)}
                               placeholder="0.00"
                             />
-                            <span className="text-[10px] text-slate-400 font-bold">EUR</span>
+                            <span className="text-[10px] text-slate-400 dark:text-slate-500 font-bold">EUR</span>
                           </div>
                         </div>
                       </div>

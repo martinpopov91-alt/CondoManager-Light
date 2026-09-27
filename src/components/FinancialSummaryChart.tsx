@@ -1,5 +1,6 @@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { useTranslation } from '../i18n/useTranslation';
+import { useTheme } from '../theme/useTheme';
 
 interface FinancialSummaryChartProps {
   collected: number;
@@ -11,8 +12,8 @@ interface FinancialSummaryChartProps {
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-white border border-slate-200 shadow-sm rounded-md p-2 text-xs font-bold">
-        <p className="text-slate-500 mb-1">{label}</p>
+      <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-md rounded-md p-2 text-xs font-bold text-slate-800 dark:text-slate-100">
+        <p className="text-slate-500 dark:text-slate-400 mb-1">{label}</p>
         {payload.map((entry: any, index: number) => {
           if (entry.value > 0) {
             return (
@@ -32,6 +33,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 
 export function FinancialSummaryChart({ collected, unpaid, fixedExpenses, dynamicExpenses }: FinancialSummaryChartProps) {
   const { t } = useTranslation();
+  const { isDark } = useTheme();
 
   const collectedLabel = t('chart.collected' as any) || 'Collected (Paid)';
   const unpaidLabel = t('chart.unpaid' as any) || 'Expected (Unpaid)';
@@ -55,9 +57,13 @@ export function FinancialSummaryChart({ collected, unpaid, fixedExpenses, dynami
     }
   ];
 
+  const gridColor = isDark ? '#334155' : '#e2e8f0';
+  const tickColor = isDark ? '#94a3b8' : '#64748b';
+  const cursorColor = isDark ? 'rgba(255, 255, 255, 0.05)' : '#f8fafc';
+
   return (
-    <div className="bg-white rounded border border-slate-200 shadow-sm p-4 print:shadow-none print:border-slate-300 print:break-inside-avoid">
-      <h3 className="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-4">
+    <div className="bg-white dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-800 shadow-sm p-4 print:shadow-none print:border-slate-300 print:break-inside-avoid transition-colors">
+      <h3 className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-4">
         {t('chart.title' as any) || 'Detailed Monthly Summary'}
       </h3>
       <div className="h-64 w-full">
@@ -66,10 +72,10 @@ export function FinancialSummaryChart({ collected, unpaid, fixedExpenses, dynami
             data={data}
             margin={{ top: 5, right: 10, left: 0, bottom: 5 }}
           >
-            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-            <XAxis dataKey="name" tick={{ fontSize: 12, fill: '#64748b' }} axisLine={false} tickLine={false} />
-            <YAxis tick={{ fontSize: 12, fill: '#64748b' }} axisLine={false} tickLine={false} tickFormatter={(value) => `${value}`} />
-            <Tooltip content={<CustomTooltip />} cursor={{ fill: '#f8fafc' }} />
+            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={gridColor} />
+            <XAxis dataKey="name" tick={{ fontSize: 12, fill: tickColor }} axisLine={false} tickLine={false} />
+            <YAxis tick={{ fontSize: 12, fill: tickColor }} axisLine={false} tickLine={false} tickFormatter={(value) => `${value}`} />
+            <Tooltip content={<CustomTooltip />} cursor={{ fill: cursorColor }} />
             <Legend wrapperStyle={{ fontSize: '12px' }} />
             <Bar dataKey={collectedLabel} stackId="a" fill="#34d399" maxBarSize={60} />
             <Bar dataKey={unpaidLabel} stackId="a" fill="#fbbf24" maxBarSize={60} />

@@ -183,8 +183,8 @@ export function PaymentReminderModal({
   };
 
   return (
-    <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-xl shadow-2xl w-full max-w-3xl flex flex-col max-h-[90vh] overflow-hidden border border-slate-200">
+    <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 transition-colors">
+      <div className="bg-white dark:bg-slate-900 rounded-xl shadow-2xl w-full max-w-3xl flex flex-col max-h-[90vh] overflow-hidden border border-slate-200 dark:border-slate-800 transition-colors">
         {/* Header */}
         <div className="p-4 bg-gradient-to-r from-rose-600 to-rose-700 text-white flex items-center justify-between">
           <div className="flex items-center gap-2.5">
@@ -213,21 +213,21 @@ export function PaymentReminderModal({
         </div>
 
         {/* Tab Selection & Language Switcher */}
-        <div className="flex items-center justify-between border-b border-slate-200 px-4 pt-3 bg-slate-50">
+        <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 px-4 pt-3 bg-slate-50 dark:bg-slate-850">
           <div className="flex gap-4">
             <button
               onClick={() => setActiveTab('group')}
               className={cn(
                 "pb-2.5 px-2 text-xs font-bold border-b-2 transition-colors flex items-center gap-1.5 cursor-pointer",
                 activeTab === 'group'
-                  ? "border-rose-600 text-rose-700"
-                  : "border-transparent text-slate-500 hover:text-slate-700"
+                  ? "border-rose-600 text-rose-600 dark:text-rose-400"
+                  : "border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
               )}
             >
               <Users className="w-4 h-4" />
               {isBgUI ? 'Общо известие (3+ месеца)' : (t('reminder.tabGroup') || 'Group Notice (3+ Months)')}
               {overdueApartments.length > 0 && (
-                <span className="px-1.5 py-0.2 text-[10px] rounded-full bg-rose-100 text-rose-700 font-bold">
+                <span className="px-1.5 py-0.2 text-[10px] rounded-full bg-rose-100 dark:bg-rose-950/80 text-rose-700 dark:text-rose-300 font-bold border border-rose-200 dark:border-rose-900/60">
                   {overdueApartments.length}
                 </span>
               )}
@@ -237,8 +237,8 @@ export function PaymentReminderModal({
               className={cn(
                 "pb-2.5 px-2 text-xs font-bold border-b-2 transition-colors flex items-center gap-1.5 cursor-pointer",
                 activeTab === 'individual'
-                  ? "border-rose-600 text-rose-700"
-                  : "border-transparent text-slate-500 hover:text-slate-700"
+                  ? "border-rose-600 text-rose-600 dark:text-rose-400"
+                  : "border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
               )}
             >
               <User className="w-4 h-4" />
@@ -248,15 +248,15 @@ export function PaymentReminderModal({
 
           {/* Language option for message text */}
           <div className="flex items-center gap-1.5 pb-2">
-            <span className="text-[10px] font-bold text-slate-500 uppercase">
+            <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase">
               {isBgUI ? 'Език на текста:' : 'Message Language:'}
             </span>
-            <div className="flex rounded-md border border-slate-300 overflow-hidden text-[10px] font-bold">
+            <div className="flex rounded-md border border-slate-300 dark:border-slate-700 overflow-hidden text-[10px] font-bold">
               <button
                 onClick={() => setMsgLang('bg')}
                 className={cn(
                   "px-2 py-0.5 transition-colors cursor-pointer",
-                  msgLang === 'bg' ? "bg-rose-600 text-white" : "bg-white text-slate-600 hover:bg-slate-100"
+                  msgLang === 'bg' ? "bg-rose-600 text-white" : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700"
                 )}
               >
                 BG
@@ -265,7 +265,7 @@ export function PaymentReminderModal({
                 onClick={() => setMsgLang('en')}
                 className={cn(
                   "px-2 py-0.5 transition-colors cursor-pointer",
-                  msgLang === 'en' ? "bg-rose-600 text-white" : "bg-white text-slate-600 hover:bg-slate-100"
+                  msgLang === 'en' ? "bg-rose-600 text-white" : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700"
                 )}
               >
                 EN
@@ -275,17 +275,17 @@ export function PaymentReminderModal({
         </div>
 
         {/* Content Area */}
-        <div className="flex-1 overflow-auto p-4 flex flex-col gap-4">
+        <div className="flex-1 overflow-auto p-4 flex flex-col gap-4 bg-white dark:bg-slate-900 transition-colors">
           {activeTab === 'individual' && (
-            <div className="bg-slate-50 p-3 rounded-lg border border-slate-200 flex flex-wrap items-center justify-between gap-3">
+            <div className="bg-slate-50 dark:bg-slate-800/60 p-3 rounded-lg border border-slate-200 dark:border-slate-700 flex flex-wrap items-center justify-between gap-3">
               <div className="flex items-center gap-2">
-                <label className="text-xs font-bold text-slate-700">
+                <label className="text-xs font-bold text-slate-700 dark:text-slate-300">
                   {isBgUI ? 'Избери съсед:' : (t('reminder.selectResident') || 'Select Resident:')}
                 </label>
                 <select
                   value={selectedId}
                   onChange={(e) => setSelectedId(e.target.value)}
-                  className="text-xs font-bold bg-white border border-slate-300 rounded-md px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-rose-500 text-slate-800"
+                  className="text-xs font-bold bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-md px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-rose-500 text-slate-800 dark:text-slate-100"
                 >
                   {displayedApartments.map(a => {
                     const apt = config.find(c => c.id === a.id);
@@ -302,11 +302,11 @@ export function PaymentReminderModal({
 
               {selectedApartment && (
                 <div className="flex items-center gap-2">
-                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-rose-100 text-rose-700 border border-rose-200">
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-rose-100 dark:bg-rose-950/70 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-900/60">
                     <AlertTriangle className="w-3 h-3 text-rose-500" />
                     {selectedApartment.monthsInDebt || 1} {isBgUI ? 'Месеца просрочие' : 'Months Overdue'}
                   </span>
-                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-slate-200 text-slate-800">
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-700">
                     {isBgUI ? 'Дължима сума' : 'Due'}: €{selectedApartment.grandTotal.toFixed(2)}
                   </span>
                 </div>
@@ -316,13 +316,13 @@ export function PaymentReminderModal({
 
           {/* Options for individual message */}
           {activeTab === 'individual' && (
-            <div className="flex flex-wrap items-center gap-4 text-xs font-medium text-slate-600 px-1">
+            <div className="flex flex-wrap items-center gap-4 text-xs font-medium text-slate-600 dark:text-slate-300 px-1">
               <label className="flex items-center gap-1.5 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={includeBreakdown}
                   onChange={(e) => setIncludeBreakdown(e.target.checked)}
-                  className="rounded border-slate-300 text-rose-600 focus:ring-rose-500"
+                  className="rounded border-slate-300 dark:border-slate-700 text-rose-600 focus:ring-rose-500"
                 />
                 {isBgUI ? 'Включи разбивка на сумите (Текуща сметка срещу Стар дълг)' : 'Include breakdown of charges (Current vs Old Debt)'}
               </label>
@@ -331,7 +331,7 @@ export function PaymentReminderModal({
                   type="checkbox"
                   checked={includePaymentNote}
                   onChange={(e) => setIncludePaymentNote(e.target.checked)}
-                  className="rounded border-slate-300 text-rose-600 focus:ring-rose-500"
+                  className="rounded border-slate-300 dark:border-slate-700 text-rose-600 focus:ring-rose-500"
                 />
                 {isBgUI ? 'Включи учтива молба за поддръжка на входа' : 'Include polite building maintenance request'}
               </label>
@@ -340,7 +340,7 @@ export function PaymentReminderModal({
 
           {/* Standardized Message Preview Box */}
           <div className="relative flex-1 group min-h-[220px]">
-            <div className="w-full h-full p-4 bg-slate-900 text-slate-100 rounded-lg border border-slate-800 font-mono text-xs leading-relaxed whitespace-pre-wrap shadow-inner overflow-auto">
+            <div className="w-full h-full p-4 bg-slate-900 dark:bg-slate-950 text-slate-100 rounded-lg border border-slate-800 dark:border-slate-800 font-mono text-xs leading-relaxed whitespace-pre-wrap shadow-inner overflow-auto">
               {contentToCopy}
             </div>
 
@@ -363,7 +363,7 @@ export function PaymentReminderModal({
           </div>
 
           {/* Footer note */}
-          <div className="flex items-center justify-between text-[11px] text-slate-500 px-1">
+          <div className="flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 px-1">
             <p>
               {isBgUI 
                 ? '💡 Това стандартизирано съобщение е готово за директно поставяне (Paste) във Viber, SMS или имейл.'
