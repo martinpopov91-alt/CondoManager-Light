@@ -3,7 +3,7 @@ import { Apartment, FixedBill, Fund } from "./types";
 export const DEFAULT_APARTMENTS: Apartment[] = [
   { id: "1.1", name: "Ap. 1.1", owner: "Стефан Дечков", idealParts: 5.406, peopleCount: 2, garageCount: 1 },
   { id: "1.2", name: "Ap. 1.2", owner: "Ваня и Иван", idealParts: 5.248, peopleCount: 2, garageCount: 1 },
-  { id: "1.3", name: "Ap. 1.3", owner: "", idealParts: 4.720, peopleCount: 0, garageCount: 1 },
+  { id: "1.3", name: "Ap. 1.3", owner: "", idealParts: 4.720, peopleCount: 0, garageCount: 1, isEmpty: true },
   { id: "1.4", name: "Ap. 1.4", owner: "Габриела и Никола", idealParts: 4.803, peopleCount: 2, garageCount: 1 },
   { id: "2.5", name: "Ap. 2.5", owner: "Атанас и Лора", idealParts: 7.228, peopleCount: 2, garageCount: 1 },
   { id: "2.6", name: "Ap. 2.6", owner: "", idealParts: 6.662, peopleCount: 1, garageCount: 1 },

@@ -206,7 +206,11 @@ export function getCarriedOverFundBalances(year: number, month: number, config: 
     let totalParts = 0;
 
     config.forEach(apt => {
-      if (apt.id !== '1.3') totalPeople += apt.peopleCount;
+      const pState = (pMonth.apartmentsState || []).find(s => s.id === apt.id);
+      const isExempt = pState?.isEmpty !== undefined
+        ? pState.isEmpty
+        : (apt.isEmpty ?? (apt.id === '1.3' || apt.peopleCount === 0));
+      if (!isExempt) totalPeople += apt.peopleCount;
       totalParts += apt.idealParts;
     });
 
@@ -233,7 +237,9 @@ export function getCarriedOverFundBalances(year: number, month: number, config: 
       if (!apt) return;
 
       if (state.status === 'Paid') {
-        const isExempt = apt.id === '1.3';
+        const isExempt = state.isEmpty !== undefined
+          ? state.isEmpty
+          : (apt.isEmpty ?? (apt.id === '1.3' || apt.peopleCount === 0));
         const myMaint = isExempt ? 0 : (apt.peopleCount * maintPerPerson);
         const myRepairFixed = apt.idealParts * repairFixedPerPart;
 
@@ -367,6 +373,7 @@ export function useCondoState() {
             ...parsed.apartmentsState,
             ...missingApts.map(apt => ({
               id: apt.id,
+              isEmpty: apt.isEmpty ?? (apt.id === '1.3' || apt.peopleCount === 0),
               oldDebt: 0,
               status: 'Unpaid',
               comment: '',
@@ -420,6 +427,7 @@ export function useCondoState() {
         })),
         apartmentsState: config.map(apt => ({
           id: apt.id,
+          isEmpty: apt.isEmpty ?? (apt.id === '1.3' || apt.peopleCount === 0),
           oldDebt: apt.id === '2.6' ? 180 : (apt.id === '1.4' ? 140 : 0),
           status: 'Unpaid',
           comment: '',
@@ -471,7 +479,12 @@ export function useCondoState() {
     let totalParts = 0;
 
     config.forEach(apt => {
-      if (apt.id !== '1.3') {
+      const aptState = monthData.apartmentsState.find(s => s.id === apt.id);
+      const isExempt = aptState?.isEmpty !== undefined
+        ? aptState.isEmpty
+        : (apt.isEmpty ?? (apt.id === '1.3' || apt.peopleCount === 0));
+
+      if (!isExempt) {
         totalPeople += apt.peopleCount;
       }
       totalGarages += apt.garageCount;
@@ -527,7 +540,9 @@ export function useCondoState() {
       const apt = config.find(a => a.id === state.id);
       if (!apt) return { ...state, currentBill: 0, grandTotal: 0, monthsInDebt: 0, repairFundShare: 0 };
 
-      const isExempt = apt.id === '1.3';
+      const isExempt = state.isEmpty !== undefined
+        ? state.isEmpty
+        : (apt.isEmpty ?? (apt.id === '1.3' || apt.peopleCount === 0));
       const myGeneral = isExempt ? 0 : (apt.peopleCount * generalPerPerson);
       const myMaint = isExempt ? 0 : (apt.peopleCount * maintPerPerson);
       const myGarage = apt.garageCount * garagePerCell;
@@ -570,6 +585,7 @@ export function useCondoState() {
       
       return {
         ...state,
+        isEmpty: isExempt,
         currentBill,
         grandTotal,
         monthsInDebt,
@@ -673,6 +689,7 @@ export function useCondoState() {
 
       return {
         ...state,
+        isEmpty: state.isEmpty,
         oldDebt: newOldDebt,
         status: 'Unpaid' as const,
         paidAmount: 0,

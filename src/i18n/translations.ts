@@ -71,6 +71,12 @@ export const translations = {
     'table.overdueSuffix': 'mo. overdue',
     'table.statusPaid': 'PAID',
     'table.statusUnpaid': 'UNPAID',
+    'table.empty': 'Empty',
+    'table.occupied': 'Occupied',
+    'table.occupancy': 'Occupancy',
+    'table.emptyTooltip': 'Vacant apartment: exempt from per-person entrance and maintenance taxes. Not counted in total residents.',
+    'table.emptyResidentsTooltip': 'Apartment marked empty — residents not counted in monthly utility dues.',
+    'table.emptyCount': 'Vacant',
     
     // Reminders
     'reminder.modalTitle': 'Standardized Payment Reminders (Overdue Accounts)',
@@ -271,6 +277,12 @@ export const translations = {
     'table.overdueSuffix': 'м. просрочие',
     'table.statusPaid': 'ПЛАТЕНО',
     'table.statusUnpaid': 'НЕПЛАТЕНО',
+    'table.empty': 'Празен',
+    'table.occupied': 'Обитаем',
+    'table.occupancy': 'Обитаемост',
+    'table.emptyTooltip': 'Необитаем апартамент: освободен от такси вход и текуща поддръжка на човек. Не се брои в общия брой живущи.',
+    'table.emptyResidentsTooltip': 'Апартаментът е маркиран като празен — живущите не се начисляват в сметките за входа.',
+    'table.emptyCount': 'Празни',
     
     // Reminders
     'reminder.modalTitle': 'Стандартизирани напомняния за плащане (Длъжници)',

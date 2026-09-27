@@ -95,6 +95,14 @@ export function InstructionsTab({ onGoToDashboard }: InstructionsTabProps) {
       a: isBg
         ? 'Цялата информация се запазва автоматично в паметта на Вашия браузър (localStorage). Можете да използвате и бутона "Запази в облака" за синхронизация или "Export CSV" за изтегляне на архив в Excel.'
         : 'All data is automatically saved inside your browser\'s local storage. You can also use the "Save to Cloud" option for GitHub/cloud synchronization or "Export CSV" for Excel backup.'
+    },
+    {
+      q: isBg
+        ? 'Как се процедира с празен (необитаем) апартамент?'
+        : 'How do I handle an empty (vacant) apartment?',
+      a: isBg
+        ? 'Можете да маркирате всеки апартамент като "Празен" с бутона в таблицата. Системата автоматично го изважда от разпределението на входните такси за консумативи (ток, асансьор, чистачка, поддръжка) и не го брои в общия брой обитатели. Апартаментът остава задължен единствено за своя дял във Фонд Ремонт (според % ид. части) и гаражи, ако има такива.'
+        : 'You can mark any apartment as "Empty" using the toggle in the ledger table. The system automatically exempts it from per-person entrance dues (utilities, elevator, cleaning, grounds maintenance) and excludes it from the total building residents count. The apartment only contributes its mandatory Repair Fund co-ownership share (% ideal parts) and garage dues if applicable.'
     }
   ];
 

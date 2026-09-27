@@ -5,6 +5,7 @@ export interface Apartment {
   idealParts: number;
   peopleCount: number;
   garageCount: number;
+  isEmpty?: boolean;
 }
 
 export interface Fund {
@@ -43,6 +44,7 @@ export interface ApartmentMonthState {
   paymentMethod?: 'cash' | 'revolut';
   comment: string;
   selected?: boolean;
+  isEmpty?: boolean;
 }
 
 export interface CalculatedApartmentState extends ApartmentMonthState {
@@ -50,6 +52,7 @@ export interface CalculatedApartmentState extends ApartmentMonthState {
   grandTotal: number;
   monthsInDebt?: number;
   repairFundShare: number;
+  isEmpty?: boolean;
 }
 
 export interface MonthData {

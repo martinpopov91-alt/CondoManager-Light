@@ -130,6 +130,9 @@ export function generateFullReport(
     if (!apt) return;
     const name = apt.name || `Ап. ${apt.id}`;
     report += `${name} (${apt.owner}):\n`;
+    if (a.isEmpty) {
+      report += isBg ? `  - Обитаемост: Празен / Необитаем (освободен от такси вход)\n` : `  - Occupancy: Vacant / Empty (exempt from living fees)\n`;
+    }
     report += isBg ? `  - Текуща месечна такса: €${a.currentBill.toFixed(2)} EUR\n` : `  - Current Bill: €${a.currentBill.toFixed(2)} EUR\n`;
     if (a.repairFundShare > 0) {
       report += isBg ? `    - Вкл. дял Фонд Ремонт: €${a.repairFundShare.toFixed(2)} EUR\n` : `    - Included Repair Share: €${a.repairFundShare.toFixed(2)} EUR\n`;
@@ -216,7 +219,8 @@ export function generateViberGeneral(
         totalCurrentUnpaid += current;
         totalOldUnpaid += old;
 
-        let line = `• ${name}${ownerStr}: €${a.grandTotal.toFixed(2)} EUR`;
+        const emptyBadge = a.isEmpty ? (isBg ? ' [Празен]' : ' [Empty]') : '';
+        let line = `• ${name}${ownerStr}${emptyBadge}: €${a.grandTotal.toFixed(2)} EUR`;
 
         if (showOldDebt && old > 0) {
           if (current > 0) {
@@ -261,10 +265,11 @@ export function generateViberGeneral(
 
         if (a.grandTotal === 0 && a.currentBill === 0 && a.oldDebt === 0) {
           report += isBg
-            ? `• ${name}${ownerStr}: €0.00 EUR (Освободен)\n`
-            : `• ${name}${ownerStr}: €0.00 EUR (Exempt)\n`;
+            ? `• ${name}${ownerStr}: €0.00 EUR (Освободен / Празен)\n`
+            : `• ${name}${ownerStr}: €0.00 EUR (Exempt / Empty)\n`;
         } else {
-          report += `• ${name}${ownerStr}: €${effectivePaid.toFixed(2)} EUR (${methodStr})\n`;
+          const emptyNote = a.isEmpty ? (isBg ? ' - Празен' : ' - Empty') : '';
+          report += `• ${name}${ownerStr}: €${effectivePaid.toFixed(2)} EUR (${methodStr}${emptyNote})\n`;
         }
       }
     });
@@ -533,7 +538,7 @@ export function exportExpensesToCSV(
 }
 
 export function exportToCSV(monthData: MonthData, apartments: CalculatedApartmentState[], config: Apartment[]) {
-  const headers = ["Apt ID", "Apt Name", "Owner", "People", "Garages", "Ideal Parts", "Repair Share (EUR)", "Old Debt (EUR)", "Current Bill (EUR)", "Grand Total (EUR)", "Status", "Paid Amount (EUR)", "Payment Method", "Comment"];
+  const headers = ["Apt ID", "Apt Name", "Owner", "Empty", "People", "Garages", "Ideal Parts", "Repair Share (EUR)", "Old Debt (EUR)", "Current Bill (EUR)", "Grand Total (EUR)", "Status", "Paid Amount (EUR)", "Payment Method", "Comment"];
   const rows = apartments.map(a => {
     const apt = config.find(c => c.id === a.id);
     const effectivePaid = a.paidAmount !== undefined && a.paidAmount !== null && a.paidAmount > 0
@@ -543,6 +548,7 @@ export function exportToCSV(monthData: MonthData, apartments: CalculatedApartmen
       apt?.id,
       `"${apt?.name || ''}"`,
       `"${apt?.owner || ''}"`,
+      a.isEmpty ? "Yes" : "No",
       apt?.peopleCount,
       apt?.garageCount,
       apt?.idealParts,

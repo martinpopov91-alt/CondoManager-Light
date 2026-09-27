@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Apartment, CalculatedApartmentState } from '../types';
 import { cn } from '../utils';
-import { Search, AlertTriangle, Bell } from 'lucide-react';
+import { Search, AlertTriangle, Bell, DoorClosed, DoorOpen } from 'lucide-react';
 import { useTranslation } from '../i18n/useTranslation';
 
 interface MainTableProps {
@@ -29,6 +29,7 @@ export function MainTable({ config, apartments, onApartmentChange, onConfigChang
 
   const selectedCount = apartments.filter(a => a.selected).length;
   const overdueCount = apartments.filter(a => a.status === 'Unpaid' && a.grandTotal > 0 && ((a.monthsInDebt || 0) >= 3 || (a.oldDebt || 0) > 0)).length;
+  const emptyCount = apartments.filter(a => a.isEmpty).length;
 
   const handlePaidAmountChange = (state: CalculatedApartmentState, newPaid: number) => {
     onApartmentChange(state.id, 'paidAmount', newPaid);
@@ -71,6 +72,15 @@ export function MainTable({ config, apartments, onApartmentChange, onConfigChang
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
+          {emptyCount > 0 && (
+            <span
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-amber-50 text-amber-800 border border-amber-200 rounded text-[10px] font-bold whitespace-nowrap shadow-2xs"
+              title={t('table.emptyTooltip')}
+            >
+              <DoorClosed className="w-3 h-3 text-amber-600" />
+              <span>{emptyCount} {t('table.emptyCount') || 'Empty'}</span>
+            </span>
+          )}
           {overdueCount > 0 && (
             <button
               onClick={() => onOpenReminderModal?.()}
@@ -92,7 +102,7 @@ export function MainTable({ config, apartments, onApartmentChange, onConfigChang
         </div>
       </div>
       <div className="overflow-x-auto print:overflow-visible">
-        <table className="w-full text-left border-collapse min-w-[1050px] print:min-w-0 print:text-[10px]">
+        <table className="w-full text-left border-collapse min-w-[1100px] print:min-w-0 print:text-[10px]">
           <thead className="bg-slate-50 sticky top-0">
             <tr className="border-b border-slate-200">
               <th className="p-2 text-[10px] font-bold text-slate-400 uppercase w-10 sticky left-0 z-10 bg-slate-50 print:hidden">
@@ -108,6 +118,7 @@ export function MainTable({ config, apartments, onApartmentChange, onConfigChang
               </th>
               <th className="p-2 text-[10px] font-bold text-slate-400 uppercase sticky left-10 z-10 bg-slate-50">{t('table.apt')}</th>
               <th className="p-2 text-[10px] font-bold text-slate-400 uppercase">{t('table.owner')}</th>
+              <th className="p-2 text-[10px] font-bold text-slate-400 uppercase text-center" title={t('table.emptyTooltip')}>{t('table.empty')}</th>
               <th className="p-2 text-[10px] font-bold text-slate-400 uppercase text-center">{t('table.idealParts')}</th>
               <th className="p-2 text-[10px] font-bold text-slate-400 uppercase text-center">{t('table.people')}</th>
               <th className="p-2 text-[10px] font-bold text-slate-400 uppercase text-center">{t('table.garages')}</th>
@@ -127,22 +138,24 @@ export function MainTable({ config, apartments, onApartmentChange, onConfigChang
               if (!apt) return null;
               
               const isOverdue = ((state.monthsInDebt || 0) >= 3 || (state.oldDebt || 0) > 0) && state.status !== 'Paid' && state.grandTotal > 0;
+              const isAptEmpty = !!state.isEmpty;
 
               const stickyCellBg = isOverdue
                 ? "bg-rose-100/95 text-rose-950"
                 : state.status === 'Paid'
                   ? "bg-emerald-50 text-slate-800"
-                  : "bg-white text-slate-800";
+                  : (isAptEmpty ? "bg-amber-50/60 text-slate-800" : "bg-white text-slate-800");
 
               return (
                 <tr key={state.id} className={cn(
                   "transition-colors", 
                   state.status === 'Paid' ? "bg-emerald-50/30 hover:bg-emerald-50" : "hover:bg-slate-50",
-                  isOverdue ? "bg-rose-100/90 hover:bg-rose-200/90 border-l-4 border-l-rose-600 font-medium text-rose-950" : ""
+                  isOverdue ? "bg-rose-100/90 hover:bg-rose-200/90 border-l-4 border-l-rose-600 font-medium text-rose-950" : "",
+                  isAptEmpty && !isOverdue && state.status !== 'Paid' ? "bg-amber-50/20" : ""
                 )}>
                   <td className={cn("p-2 sticky left-0 z-10 print:hidden", stickyCellBg)}>
                     <input 
-                      type="checkbox"
+                      type="checkbox" 
                       className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
                       checked={!!state.selected}
                       onChange={(e) => onApartmentChange(state.id, 'selected', e.target.checked)}
@@ -175,6 +188,35 @@ export function MainTable({ config, apartments, onApartmentChange, onConfigChang
                       placeholder={t('table.ownerName')}
                     />
                   </td>
+                  <td className="p-2 text-center">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const nextEmpty = !isAptEmpty;
+                        onApartmentChange(state.id, 'isEmpty', nextEmpty);
+                        onConfigChange?.(apt.id, 'isEmpty', nextEmpty);
+                      }}
+                      className={cn(
+                        "inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold transition-all cursor-pointer border shadow-2xs whitespace-nowrap",
+                        isAptEmpty
+                          ? "bg-amber-100 text-amber-900 border-amber-300 hover:bg-amber-200"
+                          : "bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-200 hover:text-slate-800"
+                      )}
+                      title={t('table.emptyTooltip')}
+                    >
+                      {isAptEmpty ? (
+                        <>
+                          <DoorClosed className="w-3 h-3 text-amber-700" />
+                          <span>{t('table.empty')}</span>
+                        </>
+                      ) : (
+                        <>
+                          <DoorOpen className="w-3 h-3 text-slate-400" />
+                          <span>{t('table.occupied')}</span>
+                        </>
+                      )}
+                    </button>
+                  </td>
                   <td className="p-2">
                     <input
                       type="number"
@@ -185,13 +227,19 @@ export function MainTable({ config, apartments, onApartmentChange, onConfigChang
                       onChange={(e) => onConfigChange?.(apt.id, 'idealParts', parseFloat(e.target.value) || 0)}
                     />
                   </td>
-                  <td className="p-2">
+                  <td className="p-2" title={isAptEmpty ? t('table.emptyResidentsTooltip') : undefined}>
                     <input
                       type="number"
                       min="0"
-                      className="w-12 mx-auto px-1 py-0.5 text-xs border border-transparent hover:border-slate-300 focus:border-indigo-500 rounded bg-transparent focus:bg-white text-center block transition-colors"
+                      className={cn(
+                        "w-12 mx-auto px-1 py-0.5 text-xs border rounded bg-transparent focus:bg-white text-center block transition-colors",
+                        isAptEmpty
+                          ? "border-amber-300 bg-amber-50/70 text-amber-800 line-through opacity-80 font-medium"
+                          : "border-transparent hover:border-slate-300 focus:border-indigo-500"
+                      )}
                       value={apt.peopleCount}
                       onChange={(e) => onConfigChange?.(apt.id, 'peopleCount', parseInt(e.target.value) || 0)}
+                      title={isAptEmpty ? t('table.emptyResidentsTooltip') : undefined}
                     />
                   </td>
                   <td className="p-2">
@@ -216,7 +264,17 @@ export function MainTable({ config, apartments, onApartmentChange, onConfigChang
                       onChange={(e) => onApartmentChange(state.id, 'oldDebt', parseFloat(e.target.value) || 0)}
                     />
                   </td>
-                  <td className="p-2 text-xs text-right font-medium">€{state.currentBill.toFixed(2)}</td>
+                  <td className="p-2 text-xs text-right font-medium">
+                    €{state.currentBill.toFixed(2)}
+                    {isAptEmpty && (
+                      <span 
+                        className="block text-[9px] text-amber-700 font-semibold"
+                        title={isBg ? "Апартаментът е освободен от такси вход. Дължи само дял фонд ремонт и гаражи (ако има)." : "Exempt from living dues. Only pays repair share & garage dues (if any)."}
+                      >
+                        {isBg ? "освободен от вход" : "no living fees"}
+                      </span>
+                    )}
+                  </td>
                   <td className={cn("p-2 text-xs font-bold text-right", isOverdue ? "text-rose-700 font-extrabold text-sm" : "text-slate-900")}>
                     €{state.grandTotal.toFixed(2)}
                   </td>
