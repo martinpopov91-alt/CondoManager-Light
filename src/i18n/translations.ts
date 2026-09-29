@@ -33,6 +33,8 @@ export const translations = {
     'app.themeLight': 'Light Mode',
     'app.themeDark': 'Dark Mode',
     'app.themeToggle': 'Toggle theme (Light / Dark)',
+    'app.expandSidebar': 'Expand sidebar',
+    'app.collapseSidebar': 'Collapse sidebar',
     
     // Chart
     'chart.title': 'Monthly Financial Overview',
@@ -266,6 +268,8 @@ export const translations = {
     'app.themeLight': 'Светъл режим',
     'app.themeDark': 'Тъмен режим',
     'app.themeToggle': 'Превключване на тема (Светла / Тъмна)',
+    'app.expandSidebar': 'Разгъване на страничната лента',
+    'app.collapseSidebar': 'Свиване на страничната лента',
     
     // Chart
     'chart.title': 'Подробно месечно финансово обобщение',
