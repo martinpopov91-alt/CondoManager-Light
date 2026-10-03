@@ -69,11 +69,11 @@ export function Layout({
   };
 
   return (
-    <div className="min-h-screen bg-slate-100 dark:bg-slate-950 flex flex-col md:flex-row text-slate-800 dark:text-slate-100 font-sans print:block transition-colors duration-200">
-      {/* Desktop Sidebar - Fixed & Sticky */}
+    <div className="h-screen overflow-hidden bg-slate-100 dark:bg-slate-950 flex flex-col md:flex-row text-slate-800 dark:text-slate-100 font-sans print:h-auto print:overflow-visible print:block transition-colors duration-200">
+      {/* Desktop Sidebar - Fixed & Full Height */}
       <aside 
         className={cn(
-          "hidden md:flex flex-col h-screen sticky top-0 bg-slate-900 border-r border-slate-800 flex-shrink-0 print:hidden shadow-lg z-30 transition-all duration-200 select-none",
+          "hidden md:flex flex-col h-full bg-slate-900 border-r border-slate-800 flex-shrink-0 print:hidden shadow-lg z-30 transition-all duration-200 select-none",
           isCollapsed ? "w-16" : "w-60"
         )}
       >
@@ -332,7 +332,7 @@ export function Layout({
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 flex flex-col min-w-0 print:block pb-16 md:pb-0">
+      <main className="flex-1 flex flex-col h-full overflow-y-auto overflow-x-hidden min-w-0 print:h-auto print:overflow-visible print:block pb-16 md:pb-0">
         {/* Top Bar with Time Picker (Sticky next to fixed sidebar) */}
         <header className="h-14 sticky top-0 z-20 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 px-4 md:px-6 flex items-center justify-between flex-shrink-0 print:hidden transition-colors shadow-2xs">
           <div className="flex items-center gap-3">
